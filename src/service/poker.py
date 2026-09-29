@@ -1,7 +1,8 @@
 from pb.ir.table.inference import poker_pb2, poker_pb2_grpc
+from src.service.abstract import AbstractServicer
 
 
-class PokerServicer(poker_pb2_grpc.PokerServiceServicer):
+class PokerServicer(AbstractServicer, poker_pb2_grpc.PokerServiceServicer):
     """Placeholder: every RPC returns an empty result until recognition is wired in."""
 
     def RecognizePoker(self, request, context):

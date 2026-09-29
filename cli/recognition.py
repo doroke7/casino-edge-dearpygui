@@ -10,10 +10,7 @@ import click
 import grpc
 
 import bootstrap
-from pb.ir.table.inference import die_pb2_grpc, disk_pb2_grpc, poker_pb2_grpc
-from src.service.die import DieServicer
-from src.service.disk import DiskServicer
-from src.service.poker import PokerServicer
+from src.register import recognition as register_recognition
 
 logger = logging.getLogger(__name__)
 
@@ -35,9 +32,7 @@ def serve(i_port: int, i_max_workers: int) -> None:
 
     o_server = grpc.server(futures.ThreadPoolExecutor(max_workers=i_max_workers))
 
-    poker_pb2_grpc.add_PokerServiceServicer_to_server(PokerServicer(), o_server)
-    disk_pb2_grpc.add_DiskServiceServicer_to_server(DiskServicer(), o_server)
-    die_pb2_grpc.add_DieServiceServicer_to_server(DieServicer(), o_server)
+    register_recognition.register(o_server)
     o_server.add_insecure_port(f"[::]:{i_port}")
     o_server.start()
     

@@ -1,7 +1,8 @@
 from pb.ir.table.inference import die_pb2, die_pb2_grpc
+from src.service.abstract import AbstractServicer
 
 
-class DieServicer(die_pb2_grpc.DieServiceServicer):
+class DieServicer(AbstractServicer, die_pb2_grpc.DieServiceServicer):
     """Placeholder: every RPC returns an empty result until recognition is wired in."""
 
     def RecognizeDie(self, request, context):

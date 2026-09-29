@@ -1,66 +1,14 @@
-import queue
 from pathlib import Path
 
 import click
 import dearpygui.dearpygui as dpg
 
 from bootstrap.config import config
-from src.driver import camera
-from src.ui import menu
+from src.service.camera_controller import CAMERA_OFF, CameraController
+from src.ui import menu, status
 
 TITLE = config("desktop.title", "Landan Desktop")
 ICON = Path(__file__).resolve().parents[2] / "asset" / "icon.png"
-
-# dearpygui callbacks run on a worker thread, but AppKit must be driven from the main
-# thread, so callbacks only enqueue; the render loop below does the work.
-actions: "queue.Queue[str]" = queue.Queue()
-
-overlay = None
-
-
-def set_status(text, color=(255, 255, 255)):
-    dpg.set_value("status", text)
-    dpg.configure_item("status", color=color, show=bool(text))
-
-
-def open_camera():
-    if overlay is not None:
-        return
-    set_status("Requesting camera permission...")
-    camera.request_permission(lambda granted: actions.put("show" if granted else "denied"))
-
-
-def show_overlay():
-    global overlay
-    try:
-        overlay = camera.build_overlay(TITLE)
-        set_status("")
-    except Exception as err:
-        set_status(f"Camera error: {err}", (255, 80, 80))
-
-
-def close_camera():
-    global overlay
-    if overlay is not None:
-        overlay.close()
-        overlay = None
-    set_status("Camera is off. Open it from the Settings menu in the menu bar.")
-
-
-def pump_actions():
-    while True:
-        try:
-            action = actions.get_nowait()
-        except queue.Empty:
-            return
-        if action == "open":
-            open_camera()
-        elif action == "close":
-            close_camera()
-        elif action == "show":
-            show_overlay()
-        elif action == "denied":
-            set_status("Camera error: Camera access permission was denied", (255, 80, 80))
 
 
 @click.command(name="desktop")
@@ -72,23 +20,24 @@ def main():
 
     with dpg.window(tag="main", no_title_bar=True, no_move=True, no_resize=True,
                     no_scrollbar=True, no_background=True):
-        dpg.add_text("", tag="status")
+        status.add()
 
     dpg.set_primary_window("main", True)
-    set_status("Camera is off. Open it from the Settings menu in the menu bar.")
+    status.show(CAMERA_OFF)
+
+    o_camera_controller = CameraController(TITLE, status.show, status.error)
 
     dpg.setup_dearpygui()
     dpg.show_viewport()
     # Native menu actions already arrive on the main thread; queue them anyway so
     # everything is handled in one place.
-    menu.install(lambda: actions.put("open"), lambda: actions.put("close"))
+    menu.install(lambda: o_camera_controller.request("open"), lambda: o_camera_controller.request("close"))
     while dpg.is_dearpygui_running():
         menu.reapply()
-        pump_actions()
+        o_camera_controller.pump()
         dpg.render_dearpygui_frame()
 
-    if overlay is not None:
-        overlay.close()
+    o_camera_controller.shutdown()
     dpg.destroy_context()
 
 

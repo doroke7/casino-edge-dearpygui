@@ -63,7 +63,7 @@ def pump_actions():
             set_status("Camera error: Camera access permission was denied", (255, 80, 80))
 
 
-@click.command()
+@click.command(name="desktop")
 def main():
     """Run the desktop app."""
     dpg.create_context()

@@ -8,7 +8,7 @@ def cli():
     """Landan Desktop command line."""
 
 
-cli.add_command(desktop.main, name="desktop")
+cli.add_command(desktop.main)
 cli.add_command(recognition.main)
 
 

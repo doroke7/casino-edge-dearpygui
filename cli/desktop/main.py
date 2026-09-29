@@ -9,7 +9,7 @@ from src.driver import camera
 from src.ui import menu
 
 TITLE = config("desktop.title", "Landan Desktop")
-ICON = Path(__file__).resolve().parents[1] / "asset" / "icon.png"
+ICON = Path(__file__).resolve().parents[2] / "asset" / "icon.png"
 
 # dearpygui callbacks run on a worker thread, but AppKit must be driven from the main
 # thread, so callbacks only enqueue; the render loop below does the work.

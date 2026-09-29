@@ -2,14 +2,7 @@ import click
 
 from cli import root
 
-
-@click.group()
-def cli():
-    """Landan Desktop command line."""
-
-
-for o_command in root.root.commands.values():
-    cli.add_command(o_command)
+cli = click.CommandCollection(sources=[root.root], help="Landan Desktop command line.")
 
 
 if __name__ == "__main__":

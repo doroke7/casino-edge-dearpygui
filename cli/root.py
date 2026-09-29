@@ -1,6 +1,7 @@
 import click
 
-from cli import desktop, recognition
+from cli.desktop import main as desktop
+from cli.recognition import main as recognition
 
 
 @click.group()

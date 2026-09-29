@@ -13,4 +13,5 @@ dependencies = [
     "pyobjc-framework-cocoa>=12.2.2 ; sys_platform == 'darwin'",
     "pyobjc-framework-quartz>=12.2.2 ; sys_platform == 'darwin'",
     "dependency-injector>=4.49.1",
+    "opencv-python-headless>=5.0.0.93",
 ]

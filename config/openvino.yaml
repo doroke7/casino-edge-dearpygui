@@ -1,0 +1,52 @@
+device: 'CPU'
+mode: 'lazy'
+
+
+detect:
+  poker:
+    card:
+      path: './model/detect/poker/card'
+      thres: 0.5
+    back_flow_front:
+      path:
+      thres: 0.7
+  baraja:
+    card:
+      path: './model/detect/baraja/card'
+      thres: 0.5
+  disk:
+    disk:
+      path: './model/detect/disk/disk'
+      thres: 0.5
+  bead:
+    bead:
+      path: './model/detect/bead/bead'
+      thres: 0.5
+  die:
+    cube:
+      path: './model/detect/disk/cube'
+      thres: 0.5
+
+
+classify:
+  poker:
+    card:
+      path: './model/classify/poker/card'
+      thres: 0.8
+    rank:
+      path: './model/classify/poker/rank'
+      thres: 0.8
+    suit:
+      path: './model/classify/poker/suit'
+      thres: 0.8
+  baraja:
+    rank:
+      path: './model/classify/baraja/rank'
+      thres: 0.8
+    suit:
+      path: './model/classify/baraja/suit'
+      thres: 0.8
+  die:
+    value:
+      path: './model/classify/die/value'
+      thres: 0.8    

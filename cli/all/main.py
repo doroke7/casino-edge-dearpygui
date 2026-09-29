@@ -11,7 +11,7 @@ from dependency_injector import providers
 import bootstrap
 from cli.desktop import main as desktop
 from container.recognition import RecognitionContainer
-from src.app.frame_buffer import FrameBuffer
+from lib.frame_buffer import FrameBuffer
 from src.register import recognition as register_recognition
 
 logger = logging.getLogger(__name__)

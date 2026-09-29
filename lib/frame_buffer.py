@@ -11,6 +11,8 @@ class FrameBuffer:
         self._frame = None
 
     def put(self, frame):
+        """Store `frame` and make it read-only, since every reader shares the same array."""
+        frame.flags.writeable = False
         self._frame = frame
 
     def latest(self):

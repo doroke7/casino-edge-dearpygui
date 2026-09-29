@@ -15,7 +15,7 @@ CAMERA_FPS = 30
 
 if IS_MACOS:
     import AppKit
-    import AVFoundation as AVF
+    import AVFoundation
     import CoreMedia
     import Quartz
 
@@ -36,12 +36,12 @@ def request_permission(callback):
     if not IS_MACOS:
         callback(False)
         return
-    status = AVF.AVCaptureDevice.authorizationStatusForMediaType_(AVF.AVMediaTypeVideo)
-    if status == AVF.AVAuthorizationStatusAuthorized:
+    status = AVFoundation.AVCaptureDevice.authorizationStatusForMediaType_(AVFoundation.AVMediaTypeVideo)
+    if status == AVFoundation.AVAuthorizationStatusAuthorized:
         callback(True)
-    elif status == AVF.AVAuthorizationStatusNotDetermined:
-        AVF.AVCaptureDevice.requestAccessForMediaType_completionHandler_(
-            AVF.AVMediaTypeVideo, lambda granted: callback(bool(granted))
+    elif status == AVFoundation.AVAuthorizationStatusNotDetermined:
+        AVFoundation.AVCaptureDevice.requestAccessForMediaType_completionHandler_(
+            AVFoundation.AVMediaTypeVideo, lambda granted: callback(bool(granted))
         )
     else:
         callback(False)
@@ -67,17 +67,17 @@ def build_overlay(window_title):
     if window is None:
         raise RuntimeError("app window not found")
 
-    device = AVF.AVCaptureDevice.defaultDeviceWithMediaType_(AVF.AVMediaTypeVideo)
+    device = AVFoundation.AVCaptureDevice.defaultDeviceWithMediaType_(AVFoundation.AVMediaTypeVideo)
     if device is None:
         raise RuntimeError("no camera found")
 
-    cam_input, err = AVF.AVCaptureDeviceInput.deviceInputWithDevice_error_(device, None)
+    cam_input, err = AVFoundation.AVCaptureDeviceInput.deviceInputWithDevice_error_(device, None)
     if cam_input is None:
         raise RuntimeError(f"cannot open camera: {err}")
 
-    session = AVF.AVCaptureSession.alloc().init()
-    if session.canSetSessionPreset_(AVF.AVCaptureSessionPreset1280x720):
-        session.setSessionPreset_(AVF.AVCaptureSessionPreset1280x720)
+    session = AVFoundation.AVCaptureSession.alloc().init()
+    if session.canSetSessionPreset_(AVFoundation.AVCaptureSessionPreset1280x720):
+        session.setSessionPreset_(AVFoundation.AVCaptureSessionPreset1280x720)
     session.addInput_(cam_input)
 
     # Pin the capture to 30fps so every build is benchmarked at the same rate.
@@ -88,8 +88,8 @@ def build_overlay(window_title):
         device.setActiveVideoMaxFrameDuration_(frame_duration)
         device.unlockForConfiguration()
 
-    layer = AVF.AVCaptureVideoPreviewLayer.layerWithSession_(session)
-    layer.setVideoGravity_(AVF.AVLayerVideoGravityResizeAspect)
+    layer = AVFoundation.AVCaptureVideoPreviewLayer.layerWithSession_(session)
+    layer.setVideoGravity_(AVFoundation.AVLayerVideoGravityResizeAspect)
     layer.setBackgroundColor_(Quartz.CGColorGetConstantColor(Quartz.kCGColorBlack))
 
     content = window.contentView()

@@ -5,6 +5,8 @@ import dearpygui.dearpygui as dpg
 
 from bootstrap.config import config
 from src.app.camera_controller import CameraController, CameraState
+from src.app.main_thread import MainThread
+from src.driver import camera
 from src.ui import menu, status
 
 TITLE = config("desktop.title", "Landan Desktop")
@@ -25,7 +27,8 @@ def main():
     dpg.set_primary_window("main", True)
     status.render_camera(CameraState.OFF)
 
-    o_camera_controller = CameraController(TITLE, status.render_camera)
+    main_thread = MainThread()
+    o_camera_controller = CameraController(TITLE, camera, main_thread.post, status.render_camera)
 
     dpg.setup_dearpygui()
     dpg.show_viewport()
@@ -37,7 +40,7 @@ def main():
     ])
     while dpg.is_dearpygui_running():
         menu.reapply()
-        o_camera_controller.pump()
+        main_thread.pump()
         dpg.render_dearpygui_frame()
 
     o_camera_controller.shutdown()

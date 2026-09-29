@@ -1,7 +1,4 @@
 import enum
-import queue
-
-from src.driver import camera
 
 
 class CameraState(enum.Enum):
@@ -15,30 +12,23 @@ class CameraState(enum.Enum):
 class CameraController:
     """Owns the camera overlay and its lifecycle; reports it through `on_state(state, detail)`.
 
-    dearpygui callbacks run on a worker thread, but AppKit must be driven from the
-    main thread, so `open()`/`close()` only enqueue; `pump()` (called from the render
-    loop) does the work.
+    `driver` provides `request_permission(callback)` and `build_overlay(title)` (see
+    src.driver.camera). `post` runs a callable on the main thread, where the driver
+    must be used; `open()`/`close()` are safe to call from any thread.
     """
 
-    def __init__(self, title, on_state):
+    def __init__(self, title, driver, post, on_state):
         self._title = title
+        self._driver = driver
+        self._post = post
         self._on_state = on_state
         self._overlay = None
-        self._events: "queue.Queue" = queue.Queue()
 
     def open(self):
-        self._events.put(self._open)
+        self._post(self._open)
 
     def close(self):
-        self._events.put(self._close)
-
-    def pump(self):
-        while True:
-            try:
-                event = self._events.get_nowait()
-            except queue.Empty:
-                return
-            event()
+        self._post(self._close)
 
     def shutdown(self):
         if self._overlay is not None:
@@ -49,12 +39,12 @@ class CameraController:
         if self._overlay is not None:
             return
         self._on_state(CameraState.REQUESTING)
-        camera.request_permission(
-            lambda granted: self._events.put(self._show if granted else self._denied))
+        self._driver.request_permission(
+            lambda granted: self._post(self._show if granted else self._denied))
 
     def _show(self):
         try:
-            self._overlay = camera.build_overlay(self._title)
+            self._overlay = self._driver.build_overlay(self._title)
             self._on_state(CameraState.ON)
         except Exception as err:
             self._on_state(CameraState.ERROR, err)

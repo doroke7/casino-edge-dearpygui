@@ -1,5 +1,6 @@
 from typing import Dict, List, Tuple
 import numpy as np
+from lib.cache.main import cacheable
 from src.detector import AbstractDetector
 from src.classifier import AbstractClassifier
 from src.pipeline.abstract_pipeline import AbstractPipeline
@@ -18,6 +19,7 @@ class PokersPipeline(AbstractPipeline):
         self.poker_rank_classifier = poker_rank_classifier
         self.poker_suit_classifier = poker_suit_classifier
 
+    @cacheable(prefix="pokers_pipeline", value="", ttl=1)
     def run(self, frame_rgb: np.ndarray) -> List[Tuple[int, int, int, int, int, int, int, int, str, float, str, float, str, float]]:
         """预测图片中的扑克牌
         

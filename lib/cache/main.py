@@ -165,10 +165,18 @@ def _key_builder(func, prefix, value):
 
 def _format_key(prefix, value, arguments):
     if value is None:
-        suffix = ":".join(str(v) for k, v in arguments.items() if k not in ("self", "cls"))
+        suffix = ":".join(_text(v) for k, v in arguments.items() if k not in ("self", "cls"))
     else:
-        suffix = _PLACEHOLDER.sub(lambda m: str(_resolve(m.group(1), arguments)), value)
+        suffix = _PLACEHOLDER.sub(lambda m: _text(_resolve(m.group(1), arguments)), value)
     return f"{prefix}:{suffix}" if suffix else prefix
+
+
+def _text(value):
+    """A key part for `value`. Arrays (numpy) are refused: their str() is truncated, so
+    different arrays would silently share a key. Key on an id or other plain value."""
+    if hasattr(value, "tobytes") and hasattr(value, "shape"):
+        raise TypeError("arrays cannot be part of a cache key; use a plain value such as an id")
+    return str(value)
 
 
 def _resolve(path, arguments):

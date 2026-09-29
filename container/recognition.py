@@ -8,9 +8,11 @@ from src.app.snapshot import SnapshotWriter
 from src.classifier import PokerCardClassifier, PokerRankClassifier, PokerSuitClassifier
 from src.detector import PokerCardDetector
 from src.pipeline import PokersPipeline
+from src.service.baccarat_service import BaccaratServicer
 from src.service.die_service import DieServicer
 from src.service.disk_service import DiskServicer
 from src.service.poker_service import PokerServicer
+from src.service.sicbo_service import SicboServicer
 
 RUNTIME_DIR = Path(__file__).resolve().parents[1] / config("recognition.runtime_dir", "runtime")
 
@@ -33,7 +35,11 @@ class RecognitionContainer(containers.DeclarativeContainer):
         poker_suit_classifier,
     )
 
+    baccarat_servicer = providers.Singleton(BaccaratServicer, frames, snapshots, pokers_pipeline)
+    # The sicbo pipeline is not implemented yet.
+    sicbo_servicer = providers.Singleton(SicboServicer, frames, snapshots, None)
+
     poker_servicer = providers.Singleton(PokerServicer, frames, snapshots, pokers_pipeline)
-    # The disk and die pipelines are not implemented yet (their files are empty).
+    # The disk and die pipelines are not implemented yet.
     disk_servicer = providers.Singleton(DiskServicer, frames, snapshots, None)
     die_servicer = providers.Singleton(DieServicer, frames, snapshots, None)

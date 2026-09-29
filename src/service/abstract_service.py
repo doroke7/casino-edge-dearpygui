@@ -1,14 +1,10 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 
 import grpc
 
 
 class AbstractServicer(ABC):
-    """Interface shared by the Poker/Disk/Die servicers.
-
-    The per-object RPC (RecognizePoker / RecognizeDisk / RecognizeDie) is named after
-    its service, so only the RPCs common to all of them are declared here.
-    """
+    """Shared plumbing for the recognition servicers: the frame buffer, snapshots and pipeline."""
 
     def __init__(self, frames, snapshots, pipeline):
         self._frames = frames
@@ -25,11 +21,3 @@ class AbstractServicer(ABC):
             context.abort(grpc.StatusCode.UNAVAILABLE, "camera is off")
         self._snapshots.save(frame, label)
         return frame
-
-    @abstractmethod
-    def RecognizeScene(self, request, context):
-        ...
-
-    @abstractmethod
-    def RecognizeAll(self, request, context):
-        ...

@@ -2,16 +2,11 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from pb.ir.table.inference import die_pb2 as ir_dot_table_dot_inference_dot_die__pb2
+from pb.ir.table.inference.game import sicbo_pb2 as ir_dot_table_dot_inference_dot_game_dot_sicbo__pb2
 
 
-class DieServiceStub:
-    """
-    提供三種 api
-    1. 辨識 骰子 的 位置
-    2. 辨識 場景 的 位置
-    3. 辨識 骰子 + 場景  位置
-    """
+class SicboServiceStub:
+    """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
         """Constructor.
@@ -20,29 +15,24 @@ class DieServiceStub:
             channel: A grpc.Channel.
         """
         self.RecognizeDie = channel.unary_unary(
-                '/pb.ir.table.inference.DieService/RecognizeDie',
-                request_serializer=ir_dot_table_dot_inference_dot_die__pb2.DieRecognizeDieRequest.SerializeToString,
-                response_deserializer=ir_dot_table_dot_inference_dot_die__pb2.DieRecognizeDieResponse.FromString,
+                '/pb.ir.table.inference.game.SicboService/RecognizeDie',
+                request_serializer=ir_dot_table_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeDieRequest.SerializeToString,
+                response_deserializer=ir_dot_table_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeDieResponse.FromString,
                 _registered_method=True)
-        self.RecognizeScene = channel.unary_unary(
-                '/pb.ir.table.inference.DieService/RecognizeScene',
-                request_serializer=ir_dot_table_dot_inference_dot_die__pb2.DieRecognizeSceneRequest.SerializeToString,
-                response_deserializer=ir_dot_table_dot_inference_dot_die__pb2.DieRecognizeSceneResponse.FromString,
+        self.RecognizeObject = channel.unary_stream(
+                '/pb.ir.table.inference.game.SicboService/RecognizeObject',
+                request_serializer=ir_dot_table_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeSceneRequest.SerializeToString,
+                response_deserializer=ir_dot_table_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeSceneResponse.FromString,
                 _registered_method=True)
         self.RecognizeAll = channel.unary_unary(
-                '/pb.ir.table.inference.DieService/RecognizeAll',
-                request_serializer=ir_dot_table_dot_inference_dot_die__pb2.DieRecognizeAllRequest.SerializeToString,
-                response_deserializer=ir_dot_table_dot_inference_dot_die__pb2.DieRecognizeAllResponse.FromString,
+                '/pb.ir.table.inference.game.SicboService/RecognizeAll',
+                request_serializer=ir_dot_table_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeAllRequest.SerializeToString,
+                response_deserializer=ir_dot_table_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeAllResponse.FromString,
                 _registered_method=True)
 
 
-class DieServiceServicer:
-    """
-    提供三種 api
-    1. 辨識 骰子 的 位置
-    2. 辨識 場景 的 位置
-    3. 辨識 骰子 + 場景  位置
-    """
+class SicboServiceServicer:
+    """Missing associated documentation comment in .proto file."""
 
     def RecognizeDie(self, request, context):
         """Missing associated documentation comment in .proto file."""
@@ -50,7 +40,7 @@ class DieServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def RecognizeScene(self, request, context):
+    def RecognizeObject(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -63,38 +53,33 @@ class DieServiceServicer:
         raise NotImplementedError('Method not implemented!')
 
 
-def add_DieServiceServicer_to_server(servicer, server):
+def add_SicboServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'RecognizeDie': grpc.unary_unary_rpc_method_handler(
                     servicer.RecognizeDie,
-                    request_deserializer=ir_dot_table_dot_inference_dot_die__pb2.DieRecognizeDieRequest.FromString,
-                    response_serializer=ir_dot_table_dot_inference_dot_die__pb2.DieRecognizeDieResponse.SerializeToString,
+                    request_deserializer=ir_dot_table_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeDieRequest.FromString,
+                    response_serializer=ir_dot_table_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeDieResponse.SerializeToString,
             ),
-            'RecognizeScene': grpc.unary_unary_rpc_method_handler(
-                    servicer.RecognizeScene,
-                    request_deserializer=ir_dot_table_dot_inference_dot_die__pb2.DieRecognizeSceneRequest.FromString,
-                    response_serializer=ir_dot_table_dot_inference_dot_die__pb2.DieRecognizeSceneResponse.SerializeToString,
+            'RecognizeObject': grpc.unary_stream_rpc_method_handler(
+                    servicer.RecognizeObject,
+                    request_deserializer=ir_dot_table_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeSceneRequest.FromString,
+                    response_serializer=ir_dot_table_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeSceneResponse.SerializeToString,
             ),
             'RecognizeAll': grpc.unary_unary_rpc_method_handler(
                     servicer.RecognizeAll,
-                    request_deserializer=ir_dot_table_dot_inference_dot_die__pb2.DieRecognizeAllRequest.FromString,
-                    response_serializer=ir_dot_table_dot_inference_dot_die__pb2.DieRecognizeAllResponse.SerializeToString,
+                    request_deserializer=ir_dot_table_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeAllRequest.FromString,
+                    response_serializer=ir_dot_table_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeAllResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'pb.ir.table.inference.DieService', rpc_method_handlers)
+            'pb.ir.table.inference.game.SicboService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('pb.ir.table.inference.DieService', rpc_method_handlers)
+    server.add_registered_method_handlers('pb.ir.table.inference.game.SicboService', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
-class DieService:
-    """
-    提供三種 api
-    1. 辨識 骰子 的 位置
-    2. 辨識 場景 的 位置
-    3. 辨識 骰子 + 場景  位置
-    """
+class SicboService:
+    """Missing associated documentation comment in .proto file."""
 
     @staticmethod
     def RecognizeDie(request,
@@ -110,9 +95,9 @@ class DieService:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/pb.ir.table.inference.DieService/RecognizeDie',
-            ir_dot_table_dot_inference_dot_die__pb2.DieRecognizeDieRequest.SerializeToString,
-            ir_dot_table_dot_inference_dot_die__pb2.DieRecognizeDieResponse.FromString,
+            '/pb.ir.table.inference.game.SicboService/RecognizeDie',
+            ir_dot_table_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeDieRequest.SerializeToString,
+            ir_dot_table_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeDieResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -124,7 +109,7 @@ class DieService:
             _registered_method=True)
 
     @staticmethod
-    def RecognizeScene(request,
+    def RecognizeObject(request,
             target,
             options=(),
             channel_credentials=None,
@@ -134,12 +119,12 @@ class DieService:
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(
+        return grpc.experimental.unary_stream(
             request,
             target,
-            '/pb.ir.table.inference.DieService/RecognizeScene',
-            ir_dot_table_dot_inference_dot_die__pb2.DieRecognizeSceneRequest.SerializeToString,
-            ir_dot_table_dot_inference_dot_die__pb2.DieRecognizeSceneResponse.FromString,
+            '/pb.ir.table.inference.game.SicboService/RecognizeObject',
+            ir_dot_table_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeSceneRequest.SerializeToString,
+            ir_dot_table_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeSceneResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -164,9 +149,9 @@ class DieService:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/pb.ir.table.inference.DieService/RecognizeAll',
-            ir_dot_table_dot_inference_dot_die__pb2.DieRecognizeAllRequest.SerializeToString,
-            ir_dot_table_dot_inference_dot_die__pb2.DieRecognizeAllResponse.FromString,
+            '/pb.ir.table.inference.game.SicboService/RecognizeAll',
+            ir_dot_table_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeAllRequest.SerializeToString,
+            ir_dot_table_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeAllResponse.FromString,
             options,
             channel_credentials,
             insecure,

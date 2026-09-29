@@ -55,10 +55,9 @@ def _find_window(title):
     return windows[0] if windows else None
 
 
-def build_overlay(window_title, top_inset=0):
+def build_overlay(window_title):
     """Attach a live preview flush with the window's content area.
 
-    `top_inset` leaves room (in points) for the app's own menu bar.
     Returns an Overlay, or raises RuntimeError.
     """
     if not IS_MACOS:
@@ -95,7 +94,7 @@ def build_overlay(window_title, top_inset=0):
 
     content = window.contentView()
     bounds = content.bounds()
-    frame = ((0, 0), (bounds.size.width, max(bounds.size.height - top_inset, 1)))
+    frame = ((0, 0), (bounds.size.width, bounds.size.height))
     view = AppKit.NSView.alloc().initWithFrame_(frame)
     view.setLayer_(layer)  # layer-hosting: set the layer first, then wantsLayer
     view.setWantsLayer_(True)

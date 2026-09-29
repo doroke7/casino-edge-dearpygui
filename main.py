@@ -4,10 +4,10 @@ from pathlib import Path
 import dearpygui.dearpygui as dpg
 
 import camera
+import menu
 
 TITLE = "Landan Desktop"
 ICON = Path(__file__).parent / "asset" / "icon.png"
-MENU_BAR_HEIGHT = 19  # points, dearpygui's default menu bar
 
 # dearpygui callbacks run on a worker thread, but AppKit must be driven from the main
 # thread, so callbacks only enqueue; the render loop below does the work.
@@ -31,7 +31,7 @@ def open_camera():
 def show_overlay():
     global overlay
     try:
-        overlay = camera.build_overlay(TITLE, top_inset=MENU_BAR_HEIGHT)
+        overlay = camera.build_overlay(TITLE)
         set_status("")
     except Exception as err:
         set_status(f"Camera error: {err}", (255, 80, 80))
@@ -42,7 +42,7 @@ def close_camera():
     if overlay is not None:
         overlay.close()
         overlay = None
-    set_status("Camera is off. Open it from the Settings menu.")
+    set_status("Camera is off. Open it from the Settings menu in the menu bar.")
 
 
 def pump_actions():
@@ -66,21 +66,20 @@ def main():
     dpg.create_viewport(title=TITLE, width=640, height=480,
                         small_icon=str(ICON), large_icon=str(ICON))
 
-    with dpg.viewport_menu_bar():
-        with dpg.menu(label="Settings"):
-            dpg.add_menu_item(label="Open Camera", callback=lambda: actions.put("open"))
-            dpg.add_menu_item(label="Close Camera", callback=lambda: actions.put("close"))
-
     with dpg.window(tag="main", no_title_bar=True, no_move=True, no_resize=True,
                     no_scrollbar=True, no_background=True):
         dpg.add_text("", tag="status")
 
     dpg.set_primary_window("main", True)
-    set_status("Camera is off. Open it from the Settings menu.")
+    set_status("Camera is off. Open it from the Settings menu in the menu bar.")
 
     dpg.setup_dearpygui()
     dpg.show_viewport()
+    # Native menu actions already arrive on the main thread; queue them anyway so
+    # everything is handled in one place.
+    menu.install(lambda: actions.put("open"), lambda: actions.put("close"))
     while dpg.is_dearpygui_running():
+        menu.reapply()
         pump_actions()
         dpg.render_dearpygui_frame()
 

@@ -19,3 +19,15 @@
 uv sync
 uv run main.py desktop
 ```
+
+## Recognition gRPC
+
+```
+uv run main.py recognition            # 預設 port 見 config/recognition.yaml
+```
+
+修改 `proto/` 後重新產生 stub（輸出到 `pb/`）：
+
+```
+make buf
+```

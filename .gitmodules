@@ -1,3 +1,6 @@
 [submodule "sample"]
 	path = sample
 	url = git@gitlab.com:doroke7/landan-sample-python.git
+[submodule "proto"]
+	path = proto
+	url = git@gitlab.com:doroke7/landan-protocol-proto.git

@@ -3,8 +3,8 @@ from pathlib import Path
 
 import dearpygui.dearpygui as dpg
 
-import camera
-import menu
+from src.driver import camera
+from src.ui import menu
 
 TITLE = "Landan Desktop"
 ICON = Path(__file__).parent / "asset" / "icon.png"

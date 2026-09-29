@@ -1,0 +1,3 @@
+[submodule "sample"]
+	path = sample
+	url = git@gitlab.com:doroke7/landan-sample-python.git

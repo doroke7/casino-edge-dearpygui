@@ -10,6 +10,8 @@ All methods must be called from the main thread (AppKit requirement).
 import sys
 import threading
 
+import numpy as np
+
 IS_MACOS = sys.platform == "darwin"
 CAMERA_FPS = 30
 
@@ -17,15 +19,54 @@ if IS_MACOS:
     import AppKit
     import AVFoundation
     import CoreMedia
+    import objc
     import Quartz
+
+    _funcs = {}
+    objc.loadBundleFunctions(None, _funcs, [("dispatch_queue_create", b"@r*@")])
+
+    class _FrameDelegate(AppKit.NSObject):
+        """Receives every captured frame on a private serial queue and keeps the latest."""
+
+        def initWithFrames_(self, frames):
+            self = objc.super(_FrameDelegate, self).init()
+            if self is not None:
+                self.frames = frames
+            return self
+
+        def captureOutput_didOutputSampleBuffer_fromConnection_(self, output, sample, connection):
+            pixels = CoreMedia.CMSampleBufferGetImageBuffer(sample)
+            if pixels is None:
+                return
+            Quartz.CVPixelBufferLockBaseAddress(pixels, Quartz.kCVPixelBufferLock_ReadOnly)
+            try:
+                height = Quartz.CVPixelBufferGetHeight(pixels)
+                width = Quartz.CVPixelBufferGetWidth(pixels)
+                stride = Quartz.CVPixelBufferGetBytesPerRow(pixels)
+                base = Quartz.CVPixelBufferGetBaseAddress(pixels)
+                rows = np.frombuffer(base.as_buffer(height * stride), np.uint8).reshape(height, stride)
+                # BGRA rows may be padded; drop the padding and alpha, and copy out of the
+                # buffer because it is recycled as soon as this callback returns.
+                frame = rows[:, : width * 4].reshape(height, width, 4)[:, :, :3].copy()
+            finally:
+                Quartz.CVPixelBufferUnlockBaseAddress(pixels, Quartz.kCVPixelBufferLock_ReadOnly)
+            frames = self.frames
+            if frames is not None:
+                frames.put(frame)
 
 
 class Overlay:
-    def __init__(self, session, view):
+    def __init__(self, session, view, frames=None, delegate=None):
         self.session = session
         self.view = view
+        self.frames = frames
+        self.delegate = delegate  # the output holds its delegate weakly, so keep it alive
 
     def close(self):
+        if self.delegate is not None:
+            self.delegate.frames = None  # frames still in flight must not repopulate the buffer
+        if self.frames is not None:
+            self.frames.clear()
         # stopRunning blocks until the device is released; keep it off the UI thread.
         threading.Thread(target=self.session.stopRunning, daemon=True).start()
         self.view.removeFromSuperview()
@@ -55,8 +96,11 @@ def _find_window(title):
     return windows[0] if windows else None
 
 
-def build_overlay(window_title):
+def build_overlay(window_title, frames=None):
     """Attach a live preview flush with the window's content area.
+
+    If `frames` (a FrameBuffer) is given, every captured frame is also stored in it as a
+    BGR numpy array, from the same capture session as the preview.
 
     Returns an Overlay, or raises RuntimeError.
     """
@@ -79,6 +123,17 @@ def build_overlay(window_title):
     if session.canSetSessionPreset_(AVFoundation.AVCaptureSessionPreset1280x720):
         session.setSessionPreset_(AVFoundation.AVCaptureSessionPreset1280x720)
     session.addInput_(cam_input)
+
+    delegate = None
+    if frames is not None:
+        output = AVFoundation.AVCaptureVideoDataOutput.alloc().init()
+        output.setVideoSettings_({Quartz.kCVPixelBufferPixelFormatTypeKey: Quartz.kCVPixelFormatType_32BGRA})
+        output.setAlwaysDiscardsLateVideoFrames_(True)
+        delegate = _FrameDelegate.alloc().initWithFrames_(frames)
+        output.setSampleBufferDelegate_queue_(delegate, _funcs["dispatch_queue_create"](b"camera.frames", None))
+        if not session.canAddOutput_(output):
+            raise RuntimeError("cannot capture frames from the camera")
+        session.addOutput_(output)
 
     # Pin the capture to 30fps so every build is benchmarked at the same rate.
     ok, _ = device.lockForConfiguration_(None)
@@ -103,4 +158,4 @@ def build_overlay(window_title):
     content.addSubview_(view)
 
     threading.Thread(target=session.startRunning, daemon=True).start()
-    return Overlay(session, view)
+    return Overlay(session, view, frames, delegate)

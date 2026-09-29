@@ -12,16 +12,17 @@ class CameraState(enum.Enum):
 class CameraController:
     """Owns the camera overlay and its lifecycle; reports it through `on_state(state, detail)`.
 
-    `driver` provides `request_permission(callback)` and `build_overlay(title)` (see
-    src.driver.camera). `post` runs a callable on the main thread, where the driver
+    `driver` provides `request_permission(callback)` and `build_overlay(title, frames)`
+    (see src.driver.camera); the overlay keeps `frames` (a FrameBuffer) fed while it is on. `post` runs a callable on the main thread, where the driver
     must be used; `open()`/`close()` are safe to call from any thread.
     """
 
-    def __init__(self, title, driver, post, on_state):
+    def __init__(self, title, driver, post, on_state, frames=None):
         self._title = title
         self._driver = driver
         self._post = post
         self._on_state = on_state
+        self._frames = frames
         self._overlay = None
 
     def open(self):
@@ -44,7 +45,7 @@ class CameraController:
 
     def _show(self):
         try:
-            self._overlay = self._driver.build_overlay(self._title)
+            self._overlay = self._driver.build_overlay(self._title, self._frames)
             self._on_state(CameraState.ON)
         except Exception as err:
             self._on_state(CameraState.ERROR, err)

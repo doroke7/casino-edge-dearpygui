@@ -16,6 +16,11 @@ ICON = Path(__file__).resolve().parents[2] / "asset" / "icon.png"
 @click.command(name="desktop")
 def main():
     """Run the desktop app."""
+    run()
+
+
+def run(frames=None):
+    """Run the desktop app; `frames` (a FrameBuffer) is fed while the camera is on."""
     dpg.create_context()
     dpg.create_viewport(title=TITLE, width=640, height=480,
                         small_icon=str(ICON), large_icon=str(ICON))
@@ -28,7 +33,7 @@ def main():
     status.render_camera(CameraState.OFF)
 
     main_thread = MainThread()
-    o_camera_controller = CameraController(TITLE, camera, main_thread.post, status.render_camera)
+    o_camera_controller = CameraController(TITLE, camera, main_thread.post, status.render_camera, frames)
 
     dpg.setup_dearpygui()
     dpg.show_viewport()

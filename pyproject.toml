@@ -1,0 +1,10 @@
+[project]
+name = "landan-desktop-dearpygui"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "dearpygui>=2.3.1",
+    "pyobjc-framework-avfoundation>=12.2.2 ; sys_platform == 'darwin'",
+    "pyobjc-framework-cocoa>=12.2.2 ; sys_platform == 'darwin'",
+    "pyobjc-framework-quartz>=12.2.2 ; sys_platform == 'darwin'",
+]

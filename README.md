@@ -17,5 +17,5 @@
 
 ```
 uv sync
-uv run main.py
+uv run main.py desktop
 ```

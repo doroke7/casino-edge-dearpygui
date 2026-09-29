@@ -1,6 +1,6 @@
 import click
 
-from cli import desktop, recognition
+from cli import root
 
 
 @click.group()
@@ -8,8 +8,8 @@ def cli():
     """Landan Desktop command line."""
 
 
-cli.add_command(desktop.main)
-cli.add_command(recognition.main)
+for o_command in root.root.commands.values():
+    cli.add_command(o_command)
 
 
 if __name__ == "__main__":

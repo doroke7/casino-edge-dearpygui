@@ -8,11 +8,11 @@ from src.app.snapshot import SnapshotWriter
 from src.classifier import PokerCardClassifier, PokerRankClassifier, PokerSuitClassifier
 from src.detector import PokerCardDetector
 from src.pipeline import PokersPipeline
-from src.service.baccarat_service import BaccaratServicer
-from src.service.die_service import DieServicer
-from src.service.disk_service import DiskServicer
-from src.service.poker_service import PokerServicer
-from src.service.sicbo_service import SicboServicer
+from src.service.ir.table.inference.equipment import die_service as ir_table_inference_equipment_die_service
+from src.service.ir.table.inference.equipment import disk_service as ir_table_inference_equipment_disk_service
+from src.service.ir.table.inference.equipment import poker_service as ir_table_inference_equipment_poker_service
+from src.service.ir.table.inference.game import baccarat_service as ir_table_inference_game_baccarat_service
+from src.service.ir.table.inference.game import sicbo_service as ir_table_inference_game_sicbo_service
 
 RUNTIME_DIR = Path(__file__).resolve().parents[1] / config("recognition.runtime_dir", "runtime")
 
@@ -35,11 +35,11 @@ class RecognitionContainer(containers.DeclarativeContainer):
         poker_suit_classifier,
     )
 
-    baccarat_servicer = providers.Singleton(BaccaratServicer, frames, snapshots, pokers_pipeline)
+    ir_table_inference_game_baccarat_servicer = providers.Singleton(ir_table_inference_game_baccarat_service.BaccaratServicer, frames, snapshots, pokers_pipeline)
     # The sicbo pipeline is not implemented yet.
-    sicbo_servicer = providers.Singleton(SicboServicer, frames, snapshots, None)
+    ir_table_inference_game_sicbo_servicer = providers.Singleton(ir_table_inference_game_sicbo_service.SicboServicer, frames, snapshots, None)
 
-    poker_servicer = providers.Singleton(PokerServicer, frames, snapshots, pokers_pipeline)
+    ir_table_inference_equipment_poker_servicer = providers.Singleton(ir_table_inference_equipment_poker_service.PokerServicer, frames, snapshots, pokers_pipeline)
     # The disk and die pipelines are not implemented yet.
-    disk_servicer = providers.Singleton(DiskServicer, frames, snapshots, None)
-    die_servicer = providers.Singleton(DieServicer, frames, snapshots, None)
+    ir_table_inference_equipment_disk_servicer = providers.Singleton(ir_table_inference_equipment_disk_service.DiskServicer, frames, snapshots, None)
+    ir_table_inference_equipment_die_servicer = providers.Singleton(ir_table_inference_equipment_die_service.DieServicer, frames, snapshots, None)

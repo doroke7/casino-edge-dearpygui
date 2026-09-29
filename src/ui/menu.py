@@ -16,17 +16,14 @@ if IS_MACOS:
     import objc
 
     class _Target(AppKit.NSObject):
-        def initWithHandlers_(self, handlers):
+        def initWithCallbacks_(self, callbacks):
             self = objc.super(_Target, self).init()
             if self is not None:
-                self.handlers = handlers
+                self.callbacks = callbacks
             return self
 
-        def openCamera_(self, sender):
-            self.handlers["open"]()
-
-        def closeCamera_(self, sender):
-            self.handlers["close"]()
+        def invoke_(self, sender):
+            self.callbacks[sender.tag()]()
 
 
 _menu = None
@@ -34,12 +31,15 @@ _target = None  # NSMenuItem holds its target weakly, so keep a reference
 _started = 0.0
 
 
-def install(on_open, on_close):
-    """Build and install the menu. Call from the main thread, after the window exists."""
+def install(items):
+    """Build and install the menu. Call from the main thread, after the window exists.
+
+    `items` is a list of (title, callback) shown under the "Settings" menu.
+    """
     global _menu, _target, _started
     if not IS_MACOS:
         return
-    _target = _Target.alloc().initWithHandlers_({"open": on_open, "close": on_close})
+    _target = _Target.alloc().initWithCallbacks_([callback for _, callback in items])
 
     menu = AppKit.NSMenu.alloc().init()
 
@@ -54,8 +54,9 @@ def install(on_open, on_close):
 
     settings_item = AppKit.NSMenuItem.alloc().init()
     settings_menu = AppKit.NSMenu.alloc().initWithTitle_("Settings")
-    for title, action in (("Open Camera", "openCamera:"), ("Close Camera", "closeCamera:")):
-        item = AppKit.NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(title, action, "")
+    for index, (title, _) in enumerate(items):
+        item = AppKit.NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(title, "invoke:", "")
+        item.setTag_(index)
         item.setTarget_(_target)
         settings_menu.addItem_(item)
     settings_item.setSubmenu_(settings_menu)

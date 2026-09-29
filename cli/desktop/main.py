@@ -4,7 +4,7 @@ import click
 import dearpygui.dearpygui as dpg
 
 from bootstrap.config import config
-from src.service.camera_controller import CAMERA_OFF, CameraController
+from src.app.camera_controller import CameraController, CameraState
 from src.ui import menu, status
 
 TITLE = config("desktop.title", "Landan Desktop")
@@ -23,15 +23,18 @@ def main():
         status.add()
 
     dpg.set_primary_window("main", True)
-    status.show(CAMERA_OFF)
+    status.render_camera(CameraState.OFF)
 
-    o_camera_controller = CameraController(TITLE, status.show, status.error)
+    o_camera_controller = CameraController(TITLE, status.render_camera)
 
     dpg.setup_dearpygui()
     dpg.show_viewport()
     # Native menu actions already arrive on the main thread; queue them anyway so
     # everything is handled in one place.
-    menu.install(lambda: o_camera_controller.request("open"), lambda: o_camera_controller.request("close"))
+    menu.install([
+        ("Open Camera", o_camera_controller.open),
+        ("Close Camera", o_camera_controller.close),
+    ])
     while dpg.is_dearpygui_running():
         menu.reapply()
         o_camera_controller.pump()

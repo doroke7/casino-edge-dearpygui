@@ -10,6 +10,7 @@ import click
 import grpc
 
 import bootstrap
+from container.recognition import RecognitionContainer
 from src.register import recognition as register_recognition
 
 logger = logging.getLogger(__name__)
@@ -32,7 +33,8 @@ def serve(i_port: int, i_max_workers: int) -> None:
 
     o_server = grpc.server(futures.ThreadPoolExecutor(max_workers=i_max_workers))
 
-    register_recognition.register(o_server)
+    o_container = RecognitionContainer()
+    register_recognition.register(o_server, o_container)
     o_server.add_insecure_port(f"[::]:{i_port}")
     o_server.start()
     

@@ -1,8 +1,8 @@
 from dependency_injector import containers, providers
 
-from src.service.die import DieServicer
-from src.service.disk import DiskServicer
-from src.service.poker import PokerServicer
+from src.service.die_service import DieServicer
+from src.service.disk_service import DiskServicer
+from src.service.poker_service import PokerServicer
 
 
 class RecognitionContainer(containers.DeclarativeContainer):

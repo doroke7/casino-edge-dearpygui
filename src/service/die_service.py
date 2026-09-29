@@ -1,5 +1,5 @@
 from pb.ir.table.inference import die_pb2, die_pb2_grpc
-from src.service.abstract import AbstractServicer
+from src.service.abstract_service import AbstractServicer
 
 
 class DieServicer(AbstractServicer, die_pb2_grpc.DieServiceServicer):

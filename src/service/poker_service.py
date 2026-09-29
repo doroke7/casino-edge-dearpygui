@@ -1,5 +1,5 @@
 from pb.ir.table.inference import poker_pb2, poker_pb2_grpc
-from src.service.abstract import AbstractServicer
+from src.service.abstract_service import AbstractServicer
 
 
 class PokerServicer(AbstractServicer, poker_pb2_grpc.PokerServiceServicer):

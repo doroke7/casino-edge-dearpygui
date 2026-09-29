@@ -1,5 +1,5 @@
 from pb.ir.table.inference import disk_pb2, disk_pb2_grpc
-from src.service.abstract import AbstractServicer
+from src.service.abstract_service import AbstractServicer
 
 
 class DiskServicer(AbstractServicer, disk_pb2_grpc.DiskServiceServicer):

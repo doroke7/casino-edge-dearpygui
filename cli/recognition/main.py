@@ -17,8 +17,8 @@ logger = logging.getLogger(__name__)
 
 
 @click.command(name="recognition", help="Recognition gRPC server")
-@click.option("-p", "--port", "i_port", type=int, default=lambda: bootstrap.config("recognition.port"), show_default="config recognition.port")
-@click.option("-w", "--max_workers", "i_max_workers", type=int, default=lambda: bootstrap.config("recognition.max_workers"), show_default="config recognition.max_workers")
+@click.option("-p", "--port", "i_port", type=int, default=lambda: bootstrap.config("services.recognition.port"), show_default="config services.recognition.port")
+@click.option("-w", "--max_workers", "i_max_workers", type=int, default=lambda: bootstrap.config("services.recognition.max_workers"), show_default="config services.recognition.max_workers")
 @click.option("-v", "--verbose", "b_verbose", is_flag=True)
 def main(i_port: int, i_max_workers: int, b_verbose: bool) -> None:
     logging.basicConfig(

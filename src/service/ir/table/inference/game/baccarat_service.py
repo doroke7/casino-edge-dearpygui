@@ -1,18 +1,33 @@
-from pb.ir.table.inference.game import baccarat_pb2, baccarat_pb2_grpc
-from src.service.abstract_service import AbstractServicer
+import threading
+
+from pb.recognition.ir.inference.game import baccarat_pb2, baccarat_pb2_grpc
+from src.service.abstract_service import AbstractServicer, interval_seconds
+
+INTERVAL_SECONDS = interval_seconds("games.baccarat.interval")
 
 
 class BaccaratServicer(AbstractServicer, baccarat_pb2_grpc.BaccaratServiceServicer):
-    """Placeholder: saves the latest camera frame as a JPEG, then returns an empty result until recognition is wired in."""
+    """Recognizes the pokers (poker pipeline) and the table objects (baccarat pipeline) in the latest camera frame."""
 
-    def RecognizePoker(self, request, context):
-        self._grab_frame(context, "baccarat_poker")
-        return baccarat_pb2.BaccaratRecognizePokerResponse()
+    def __init__(self, frames, snapshots, pokers_pipeline, die_pipeline, baccarat_pipeline):
+        super().__init__(frames, snapshots, pokers_pipeline, die_pipeline)
+        self._baccarat_pipeline = baccarat_pipeline
 
-    def RecognizeObject(self, request, context):
-        self._grab_frame(context, "baccarat_scene")
-        yield baccarat_pb2.BaccaratRecognizeSceneResponse()
+    def RecognizeItems(self, request, context):
+        return baccarat_pb2.BaccaratRecognizeItemsResponse(items=self._recognize_pokers(self._latest_frame(context)))
+
+    def RecognizeObjects(self, request, context):
+        stopped = threading.Event()
+        context.add_callback(stopped.set)
+        while not stopped.is_set():
+            yield baccarat_pb2.BaccaratRecognizeObjectsResponse(
+                objects=self._recognize_objects(self._baccarat_pipeline, self._latest_frame(context))
+            )
+            stopped.wait(INTERVAL_SECONDS)
 
     def RecognizeAll(self, request, context):
-        self._grab_frame(context, "baccarat_all")
-        return baccarat_pb2.BaccaratRecognizeAllResponse()
+        frame = self._latest_frame(context)
+        return baccarat_pb2.BaccaratRecognizeAllResponse(
+            objects=self._recognize_objects(self._baccarat_pipeline, frame),
+            items=self._recognize_pokers(frame),
+        )

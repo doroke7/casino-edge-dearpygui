@@ -1,0 +1,4 @@
+poker:
+  interval: 1000
+die:
+  interval: 1000

@@ -66,8 +66,8 @@ desktop:
 buf:
 	buf generate proto --template buf.gen.yaml
 	find pb -name '*_pb2*.py' -exec sed -i '' -E \
-		-e 's/^from (ir|resource|facade|source)\./from pb.\1./' \
-		-e 's/^from (ir|resource|facade|source) import/from pb.\1 import/' \
+		-e 's/^from (recognition|resource|facade|source)\./from pb.\1./' \
+		-e 's/^from (recognition|resource|facade|source) import/from pb.\1 import/' \
 		-e 's/^from common import/from pb import/' \
 		-e 's/^import common_pb2 as/from pb import common_pb2 as/' \
 		{} +

@@ -1,0 +1,14 @@
+from typing import Any, List
+
+import numpy as np
+
+from lib.cache.main import cacheable
+from src.pipeline.abstract_pipeline import AbstractPipeline
+
+
+class DiePipeline(AbstractPipeline):
+
+    @cacheable(prefix="die_pipeline", value="", ttl=1)
+    def run(self, frame_rgb: np.ndarray) -> List[Any]:
+        """Placeholder: finds no dice until the detector and classifier are wired in."""
+        return []

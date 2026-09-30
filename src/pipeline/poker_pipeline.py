@@ -1,0 +1,109 @@
+from typing import Dict, List, Tuple
+import numpy as np
+from lib.cache.main import cacheable
+from src.detector import AbstractDetector
+from src.classifier import AbstractClassifier
+from src.pipeline.abstract_pipeline import AbstractPipeline
+
+class PokerPipeline(AbstractPipeline):
+
+    def __init__(
+        self,
+        poker_card_detector: AbstractDetector,
+        poker_card_classifier: AbstractClassifier,
+        poker_rank_classifier: AbstractClassifier,
+        poker_suit_classifier: AbstractClassifier,
+    ) -> None:
+        self.poker_card_detector = poker_card_detector
+        self.poker_card_classifier = poker_card_classifier
+        self.poker_rank_classifier = poker_rank_classifier
+        self.poker_suit_classifier = poker_suit_classifier
+
+    @cacheable(prefix="poker_pipeline", value="", ttl=1)
+    def run(self, frame_rgb: np.ndarray) -> List[Tuple[int, int, int, int, int, int, int, int, str, float, str, float, str, float]]:
+        """预测图片中的扑克牌
+        
+        Args:
+            frame_rgb: RGB 格式的圖像 (numpy.ndarray)
+        
+        Returns:
+            list of (x1, y1, x2, y2, x, y, w, h, card_name, card_conf, suit_name, suit_conf, rank_name, rank_conf)
+            x1, y1: 左上角坐标
+            x2, y2: 右下角坐标
+            x, y: 中心点坐标
+            w, h: 宽度和高度
+            card_name: 牌面类型
+            card_conf: 牌面类型置信度
+            suit_name: 花色
+            suit_conf: 花色置信度
+            rank_name: 点数
+            rank_conf: 点数置信度
+        """
+          # 檢測撲克牌位置
+
+        print('開始執行 poke_pipeline...')
+        a_detects = self.poker_card_detector(frame_rgb)
+
+        # 处理每个检测结果
+        a_results = []
+        for d_detect in a_detects:
+            x1, y1, x2, y2, x, y, w, h, detected_confidence, class_id, detected_name = d_detect
+            
+            # 裁剪检测区域
+            card_image = frame_rgb[y1:y2, x1:x2]
+            
+            # 预测花色和点数
+            suit_class_name = '-'
+            rank_class_name = '-'
+            suit_confidence = np.float32(0)
+            rank_confidence = np.float32(0)
+            name = detected_name
+            confidence = detected_confidence
+
+            # 策略A: 先 detect 牌(Card) -> 框出卡後 classify 種類(Back, Flow, Front)
+            #                                                                     -> 如果是 Back, Flow -> 不做事
+            #                                                                     -> 如果是 Front      -> 同時 classify 花色, 點數
+            if detected_name == 'Card':
+                _, card_class_name, card_confidence = self.poker_card_classifier(card_image)
+                
+                name = card_class_name
+                confidence = card_confidence
+                
+                if card_class_name in ['Back', 'Flow']:
+                    # do nothing
+                    pass
+
+                if card_class_name in ['Front']:
+                    _, suit_class_name, suit_confidence = self.poker_suit_classifier(card_image)
+                    _, rank_class_name, rank_confidence = self.poker_rank_classifier(card_image)
+
+            # 策略B: 先 detect 基本類型(Back, Flow, Front)
+            #                                              -> 如果是 Back, Flow -> 不做事
+            #                                              -> 如果是 Front      -> 同時 classify 花色, 點數
+            elif detected_name in ['Back', 'Flow', 'Front']:
+                # 優化：只有是前卡，才需要做 花色-點數 分類判斷
+                if detected_name == 'Front':
+                    _, suit_class_name, suit_confidence = self.poker_suit_classifier(card_image)
+                    _, rank_class_name, rank_confidence = self.poker_rank_classifier(card_image)
+            
+            # 添加到结果列表
+            a_results.append(
+                (
+                    int(x1),
+                    int(y1),
+                    int(x2),
+                    int(y2),
+                    int(x),
+                    int(y),
+                    int(w),
+                    int(h),
+                    name,
+                    confidence,
+                    suit_class_name,
+                    suit_confidence,
+                    rank_class_name,
+                    rank_confidence,
+                    detected_confidence
+                )
+            )
+        return a_results

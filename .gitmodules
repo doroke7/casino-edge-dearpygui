@@ -1,0 +1,6 @@
+[submodule "sample"]
+	path = sample
+	url = git@github.com:doroke7/landan-sample-python.git
+[submodule "proto"]
+	path = proto
+	url = git@github.com:doroke7/casino-protocol-proto.git

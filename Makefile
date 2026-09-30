@@ -1,12 +1,6 @@
 .PHONY: submodule init install dev run desktop buf clean
 
-PY_VERSION := 3.14
-PYTHON ?= python3
-VENV := .venv
-PIP := $(VENV)/bin/pip
-PY := $(VENV)/bin/python
 
-DIST_DIR := dist
 
 # ── local dev ────────────────────────────────────────────
 
@@ -17,9 +11,9 @@ submodule:
 
 
 init:
-	@rm -Rf .venv
-	@uv venv .venv --python $(PY_VERSION)
-	@uv venv --seed
+	rm -Rf .venv
+	uv venv .venv --python 3.14
+	uv venv --seed
 
 
 # 為什麼用 uv 取代 【pip freeze】或 【pip install pipreqs】
@@ -40,18 +34,21 @@ init:
 # 建置套件         打包 Python 套件          python -m build                    uv build
 
 install:
-	@uv sync                        
+	uv sync                        
 
 
 # 使用虛擬環境的運行
 dev:
-	@$(PY) main.py recognition -v
+	uv run python main.py all -v
 
-run:
-	$(PY) main.py recognition -v
+start:
+	uv run python main.py all -v
 
 desktop:
-	$(PY) main.py desktop
+	uv run python main.py desktop
+
+recognition:
+	uv run python main.py recognition
 
 
 
@@ -77,5 +74,5 @@ buf:
 
 
 clean:
-	rm -rf $(VENV) $(DIST_DIR) build *.egg-info
+	rm -rf .venv ./dist build *.egg-info
 

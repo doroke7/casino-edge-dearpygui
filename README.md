@@ -1,3 +1,41 @@
+
+# 安裝 uv 與 poethepoet
+1. 在 mac， brew 安裝 uv 套件管理工具, peo 命令工具
+```
+  # mac
+  brew install uv
+  brew tap nat-n/poethepoet
+  brew install nat-n/poethepoet/poethepoet
+  # win
+
+  irm https://astral.sh/uv/install.ps1 | iex
+  python -m pip install poethepoet
+```
+
+
+2. 在 桌面OS .venv 的python 3.11 的虛擬小環境
+```zsh
+  # MAC
+  make init
+
+  # WIN
+  poe init
+
+```
+
+
+
+3. 以 uv 安裝依賴
+
+```zsh
+  # MAC
+  make install
+
+  # Win
+  poe install
+```
+
+
 ## 性能的問題
 
 **測試條件**

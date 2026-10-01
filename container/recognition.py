@@ -17,12 +17,14 @@ from src.pipeline import (
     SicboPipeline,
     WheelPipeline,
 )
-from src.service.ir.table.inference.item import die_service as ir_table_inference_item_die_service
-from src.service.ir.table.inference.item import disk_service as ir_table_inference_item_disk_service
-from src.service.ir.table.inference.item import poker_service as ir_table_inference_item_poker_service
-from src.service.ir.monitor.screenshot import capture_service as ir_monitor_screenshot_capture_service
-from src.service.ir.table.inference.game import baccarat_service as ir_table_inference_game_baccarat_service
-from src.service.ir.table.inference.game import sicbo_service as ir_table_inference_game_sicbo_service
+from src.service.ir.inference.item import die_service as ir_inference_item_die_service
+from src.service.ir.inference.item import disk_service as ir_inference_item_disk_service
+from src.service.ir.inference.item import poker_service as ir_inference_item_poker_service
+from src.service.ir.monitor.capture import screenshot_service as ir_monitor_capture_screenshot_service
+from src.service.ir.inference.game import baccarat_service as ir_inference_game_baccarat_service
+from src.service.ir.inference.game import sicbo_service as ir_inference_game_sicbo_service
+from src.service.ir.inference.object import baccarat_service as ir_inference_object_baccarat_service
+from src.service.ir.inference.object import sicbo_service as ir_inference_object_sicbo_service
 
 RUNTIME_DIR = Path(__file__).resolve().parents[1] / config("services.recognition.runtime_dir", "runtime")
 
@@ -53,11 +55,14 @@ class RecognitionContainer(containers.DeclarativeContainer):
     bead_pipeline = providers.Singleton(BeadPipeline)
     wheel_pipeline = providers.Singleton(WheelPipeline)
 
-    ir_table_inference_game_baccarat_servicer = providers.Singleton(ir_table_inference_game_baccarat_service.BaccaratServicer, frames, snapshots, pokers_pipeline, die_pipeline, baccarat_pipeline)
-    ir_table_inference_game_sicbo_servicer = providers.Singleton(ir_table_inference_game_sicbo_service.SicboServicer, frames, snapshots, pokers_pipeline, die_pipeline, sicbo_pipeline)
+    ir_inference_game_baccarat_servicer = providers.Singleton(ir_inference_game_baccarat_service.BaccaratServicer, frames, snapshots, pokers_pipeline, die_pipeline, baccarat_pipeline)
+    ir_inference_game_sicbo_servicer = providers.Singleton(ir_inference_game_sicbo_service.SicboServicer, frames, snapshots, pokers_pipeline, die_pipeline, sicbo_pipeline)
 
-    ir_table_inference_item_poker_servicer = providers.Singleton(ir_table_inference_item_poker_service.PokerServicer, frames, snapshots, pokers_pipeline, die_pipeline)
-    ir_table_inference_item_disk_servicer = providers.Singleton(ir_table_inference_item_disk_service.DiskServicer, frames, snapshots, pokers_pipeline, die_pipeline)
-    ir_table_inference_item_die_servicer = providers.Singleton(ir_table_inference_item_die_service.DieServicer, frames, snapshots, pokers_pipeline, die_pipeline)
+    ir_inference_object_baccarat_servicer = providers.Singleton(ir_inference_object_baccarat_service.BaccaratServicer, frames, snapshots, pokers_pipeline, die_pipeline, baccarat_pipeline)
+    ir_inference_object_sicbo_servicer = providers.Singleton(ir_inference_object_sicbo_service.SicboServicer, frames, snapshots, pokers_pipeline, die_pipeline, sicbo_pipeline)
 
-    ir_monitor_screenshot_capture_servicer = providers.Singleton(ir_monitor_screenshot_capture_service.ScreenshotServicer, frames, snapshots)
+    ir_inference_item_poker_servicer = providers.Singleton(ir_inference_item_poker_service.PokerServicer, frames, snapshots, pokers_pipeline, die_pipeline)
+    ir_inference_item_disk_servicer = providers.Singleton(ir_inference_item_disk_service.DiskServicer, frames, snapshots, pokers_pipeline, die_pipeline)
+    ir_inference_item_die_servicer = providers.Singleton(ir_inference_item_die_service.DieServicer, frames, snapshots, pokers_pipeline, die_pipeline)
+
+    ir_monitor_capture_screenshot_servicer = providers.Singleton(ir_monitor_capture_screenshot_service.ScreenshotServicer, frames, snapshots)

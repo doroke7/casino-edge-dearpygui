@@ -1,7 +1,7 @@
 from dependency_injector import containers, providers
 
 from bootstrap.config import config
-from lib.frame_buffer import FrameBuffer
+from lib.frame_buffer.main import FrameBuffer
 from src.app.camera_controller import CameraController
 from src.app.main_thread import MainThread
 from src.driver import camera

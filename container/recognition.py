@@ -3,7 +3,7 @@ from pathlib import Path
 from dependency_injector import containers, providers
 
 from bootstrap.config import config
-from lib.frame_buffer import FrameBuffer
+from lib.frame_buffer.main import FrameBuffer
 from src.app.snapshot import SnapshotWriter
 from src.classifier import PokerCardClassifier, PokerRankClassifier, PokerSuitClassifier
 from src.detector import PokerCardDetector

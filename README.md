@@ -67,7 +67,7 @@ make buf
 │   └── classifier/         #   分類器（撲克牌、點數、花色）
 │ 
 ├── lib/                    # 通用工具 (～= golang 的 pkg)
-│   ├── frame_buffer.py     #   只保留最新一幀，供擷取執行緒與讀取端共享
+│   ├── frame_buffer/       #   只保留最新一幀，供擷取執行緒與讀取端共享
 │   ├── cache/              #   記憶體快取
 │   └── utility/            #   小工具（如 pad_box）
 │

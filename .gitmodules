@@ -4,3 +4,6 @@
 [submodule "proto"]
 	path = proto
 	url = git@github.com:doroke7/casino-protocol-proto.git
+[submodule "runs"]
+	path = runs
+	url = git@github.com:doroke7/landan-ai-yolo-runs.git

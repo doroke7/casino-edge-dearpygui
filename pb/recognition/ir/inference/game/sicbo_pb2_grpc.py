@@ -14,12 +14,12 @@ class SicboServiceStub:
         Args:
             channel: A grpc.Channel.
         """
-        self.RecognizeItems = channel.unary_unary(
+        self.RecognizeItems = channel.unary_stream(
                 '/pb.recognition.ir.inference.game.SicboService/RecognizeItems',
                 request_serializer=recognition_dot_ir_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeItemsRequest.SerializeToString,
                 response_deserializer=recognition_dot_ir_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeItemsResponse.FromString,
                 _registered_method=True)
-        self.RecognizeObjects = channel.unary_stream(
+        self.RecognizeObjects = channel.unary_unary(
                 '/pb.recognition.ir.inference.game.SicboService/RecognizeObjects',
                 request_serializer=recognition_dot_ir_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeObjectsRequest.SerializeToString,
                 response_deserializer=recognition_dot_ir_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeObjectsResponse.FromString,
@@ -55,12 +55,12 @@ class SicboServiceServicer:
 
 def add_SicboServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'RecognizeItems': grpc.unary_unary_rpc_method_handler(
+            'RecognizeItems': grpc.unary_stream_rpc_method_handler(
                     servicer.RecognizeItems,
                     request_deserializer=recognition_dot_ir_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeItemsRequest.FromString,
                     response_serializer=recognition_dot_ir_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeItemsResponse.SerializeToString,
             ),
-            'RecognizeObjects': grpc.unary_stream_rpc_method_handler(
+            'RecognizeObjects': grpc.unary_unary_rpc_method_handler(
                     servicer.RecognizeObjects,
                     request_deserializer=recognition_dot_ir_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeObjectsRequest.FromString,
                     response_serializer=recognition_dot_ir_dot_inference_dot_game_dot_sicbo__pb2.SicboRecognizeObjectsResponse.SerializeToString,
@@ -92,7 +92,7 @@ class SicboService:
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(
+        return grpc.experimental.unary_stream(
             request,
             target,
             '/pb.recognition.ir.inference.game.SicboService/RecognizeItems',
@@ -119,7 +119,7 @@ class SicboService:
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_stream(
+        return grpc.experimental.unary_unary(
             request,
             target,
             '/pb.recognition.ir.inference.game.SicboService/RecognizeObjects',

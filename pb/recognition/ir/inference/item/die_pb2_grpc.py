@@ -14,7 +14,7 @@ class DieServiceStub:
         Args:
             channel: A grpc.Channel.
         """
-        self.RecognizeItems = channel.unary_unary(
+        self.RecognizeItems = channel.unary_stream(
                 '/pb.recognition.ir.inference.item.DieService/RecognizeItems',
                 request_serializer=recognition_dot_ir_dot_inference_dot_item_dot_die__pb2.DieRecognizeItemsRequest.SerializeToString,
                 response_deserializer=recognition_dot_ir_dot_inference_dot_item_dot_die__pb2.DieRecognizeItemsResponse.FromString,
@@ -33,7 +33,7 @@ class DieServiceServicer:
 
 def add_DieServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'RecognizeItems': grpc.unary_unary_rpc_method_handler(
+            'RecognizeItems': grpc.unary_stream_rpc_method_handler(
                     servicer.RecognizeItems,
                     request_deserializer=recognition_dot_ir_dot_inference_dot_item_dot_die__pb2.DieRecognizeItemsRequest.FromString,
                     response_serializer=recognition_dot_ir_dot_inference_dot_item_dot_die__pb2.DieRecognizeItemsResponse.SerializeToString,
@@ -60,7 +60,7 @@ class DieService:
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(
+        return grpc.experimental.unary_stream(
             request,
             target,
             '/pb.recognition.ir.inference.item.DieService/RecognizeItems',

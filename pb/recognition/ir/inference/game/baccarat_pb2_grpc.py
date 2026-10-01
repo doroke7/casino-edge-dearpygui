@@ -14,12 +14,12 @@ class BaccaratServiceStub:
         Args:
             channel: A grpc.Channel.
         """
-        self.RecognizeItems = channel.unary_unary(
+        self.RecognizeItems = channel.unary_stream(
                 '/pb.recognition.ir.inference.game.BaccaratService/RecognizeItems',
                 request_serializer=recognition_dot_ir_dot_inference_dot_game_dot_baccarat__pb2.BaccaratRecognizeItemsRequest.SerializeToString,
                 response_deserializer=recognition_dot_ir_dot_inference_dot_game_dot_baccarat__pb2.BaccaratRecognizeItemsResponse.FromString,
                 _registered_method=True)
-        self.RecognizeObjects = channel.unary_stream(
+        self.RecognizeObjects = channel.unary_unary(
                 '/pb.recognition.ir.inference.game.BaccaratService/RecognizeObjects',
                 request_serializer=recognition_dot_ir_dot_inference_dot_game_dot_baccarat__pb2.BaccaratRecognizeObjectsRequest.SerializeToString,
                 response_deserializer=recognition_dot_ir_dot_inference_dot_game_dot_baccarat__pb2.BaccaratRecognizeObjectsResponse.FromString,
@@ -55,12 +55,12 @@ class BaccaratServiceServicer:
 
 def add_BaccaratServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'RecognizeItems': grpc.unary_unary_rpc_method_handler(
+            'RecognizeItems': grpc.unary_stream_rpc_method_handler(
                     servicer.RecognizeItems,
                     request_deserializer=recognition_dot_ir_dot_inference_dot_game_dot_baccarat__pb2.BaccaratRecognizeItemsRequest.FromString,
                     response_serializer=recognition_dot_ir_dot_inference_dot_game_dot_baccarat__pb2.BaccaratRecognizeItemsResponse.SerializeToString,
             ),
-            'RecognizeObjects': grpc.unary_stream_rpc_method_handler(
+            'RecognizeObjects': grpc.unary_unary_rpc_method_handler(
                     servicer.RecognizeObjects,
                     request_deserializer=recognition_dot_ir_dot_inference_dot_game_dot_baccarat__pb2.BaccaratRecognizeObjectsRequest.FromString,
                     response_serializer=recognition_dot_ir_dot_inference_dot_game_dot_baccarat__pb2.BaccaratRecognizeObjectsResponse.SerializeToString,
@@ -92,7 +92,7 @@ class BaccaratService:
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(
+        return grpc.experimental.unary_stream(
             request,
             target,
             '/pb.recognition.ir.inference.game.BaccaratService/RecognizeItems',
@@ -119,7 +119,7 @@ class BaccaratService:
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_stream(
+        return grpc.experimental.unary_unary(
             request,
             target,
             '/pb.recognition.ir.inference.game.BaccaratService/RecognizeObjects',

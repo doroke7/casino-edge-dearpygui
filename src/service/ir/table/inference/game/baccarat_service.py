@@ -14,16 +14,16 @@ class BaccaratServicer(AbstractServicer, baccarat_pb2_grpc.BaccaratServiceServic
         self._baccarat_pipeline = baccarat_pipeline
 
     def RecognizeItems(self, request, context):
-        return baccarat_pb2.BaccaratRecognizeItemsResponse(items=self._recognize_pokers(self._latest_frame(context)))
-
-    def RecognizeObjects(self, request, context):
         stopped = threading.Event()
         context.add_callback(stopped.set)
         while not stopped.is_set():
-            yield baccarat_pb2.BaccaratRecognizeObjectsResponse(
-                objects=self._recognize_objects(self._baccarat_pipeline, self._latest_frame(context))
-            )
+            yield baccarat_pb2.BaccaratRecognizeItemsResponse(items=self._recognize_pokers(self._latest_frame(context)))
             stopped.wait(INTERVAL_SECONDS)
+
+    def RecognizeObjects(self, request, context):
+        return baccarat_pb2.BaccaratRecognizeObjectsResponse(
+            objects=self._recognize_objects(self._baccarat_pipeline, self._latest_frame(context))
+        )
 
     def RecognizeAll(self, request, context):
         frame = self._latest_frame(context)

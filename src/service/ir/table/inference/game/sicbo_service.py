@@ -14,16 +14,16 @@ class SicboServicer(AbstractServicer, sicbo_pb2_grpc.SicboServiceServicer):
         self._sicbo_pipeline = sicbo_pipeline
 
     def RecognizeItems(self, request, context):
-        return sicbo_pb2.SicboRecognizeItemsResponse(items=self._recognize_dice(self._latest_frame(context)))
-
-    def RecognizeObjects(self, request, context):
         stopped = threading.Event()
         context.add_callback(stopped.set)
         while not stopped.is_set():
-            yield sicbo_pb2.SicboRecognizeObjectsResponse(
-                objects=self._recognize_objects(self._sicbo_pipeline, self._latest_frame(context))
-            )
+            yield sicbo_pb2.SicboRecognizeItemsResponse(items=self._recognize_dice(self._latest_frame(context)))
             stopped.wait(INTERVAL_SECONDS)
+
+    def RecognizeObjects(self, request, context):
+        return sicbo_pb2.SicboRecognizeObjectsResponse(
+            objects=self._recognize_objects(self._sicbo_pipeline, self._latest_frame(context))
+        )
 
     def RecognizeAll(self, request, context):
         frame = self._latest_frame(context)

@@ -18,12 +18,12 @@ class PokerCardDetector(AbstractDetector):
 
         Args:
             model_dir: 模型資料夾路徑，默認 openvino.detect.poker.card.path
-            conf_threshold: 置信度閾值，默認 openvino.detect.poker.card.thres
+            conf_threshold: 置信度閾值，默認 openvino.detect.poker.card.threshold
             ovdevice: OpenVINO 推論裝置，默認 openvino.device
         """
         super().__init__(
             model_dir if model_dir is not None else bootstrap.config('openvino.detect.poker.card.path'),
-            conf_threshold if conf_threshold is not None else bootstrap.config('openvino.detect.poker.card.thres'),
+            conf_threshold if conf_threshold is not None else bootstrap.config('openvino.detect.poker.card.threshold'),
             ovdevice if ovdevice is not None else bootstrap.config('openvino.device'),
         )
 

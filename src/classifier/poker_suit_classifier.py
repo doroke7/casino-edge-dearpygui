@@ -17,12 +17,12 @@ class PokerSuitClassifier(AbstractClassifier):
 
         Args:
             model_dir: 模型資料夾路徑，默認 openvino.classify.poker.suit.path
-            conf_threshold: 置信度閾值，默認 openvino.classify.poker.suit.thres
+            conf_threshold: 置信度閾值，默認 openvino.classify.poker.suit.threshold
             ovdevice: OpenVINO 推論裝置，默認 openvino.device
         """
         super().__init__(
             model_dir if model_dir is not None else bootstrap.config('openvino.classify.poker.suit.path'),
-            conf_threshold if conf_threshold is not None else bootstrap.config('openvino.classify.poker.suit.thres'),
+            conf_threshold if conf_threshold is not None else bootstrap.config('openvino.classify.poker.suit.threshold'),
             ovdevice if ovdevice is not None else bootstrap.config('openvino.device'),
         )
 

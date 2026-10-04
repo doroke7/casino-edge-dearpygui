@@ -42,7 +42,7 @@ class PokerPredictorCommand(AbstractCommand):
             ("分類 rank", self.poker_pipeline.poker_rank_classifier),
             ("分類 suit", self.poker_pipeline.poker_suit_classifier),
         ):
-            click.echo("{}: {} (thres={})".format(label, o_model.model_dir, o_model.conf_threshold))
+            click.echo("{}: {} (threshold={})".format(label, o_model.model_dir, o_model.conf_threshold))
 
         f_started = time.perf_counter()
 

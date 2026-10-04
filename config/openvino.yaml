@@ -6,47 +6,47 @@ detect:
   poker:
     card:
       path: './runs/detect/poker/card/result-3/weights/best_openvino_model'
-      thres: 0.5
+      threshold: 0.5
     back_flow_front:
       path:
-      thres: 0.7
+      threshold: 0.7
   baraja:
     card:
       path: './runs/detect/baraja/card/result-1/weights/best_openvino_model'
-      thres: 0.5
+      threshold: 0.5
   disk:
     disk:
       path: './runs/detect/disk/disk/result-1/weights/best_openvino_model'
-      thres: 0.5
+      threshold: 0.5
   bead:
     bead:
       path: './runs/detect/bead/bead/result-1/weights/best_openvino_model'
-      thres: 0.5
+      threshold: 0.5
   die:
     cube:
       path: './runs/detect/die/cube/result-1/weights/best_openvino_model'
-      thres: 0.5
+      threshold: 0.5
 
 
 classify:
   poker:
     card:
       path: './runs/classify/poker/card/result-1/weights/best_openvino_model'
-      thres: 0.8
+      threshold: 0.8
     rank:
       path: './runs/classify/poker/rank/result-2/weights/best_openvino_model'
-      thres: 0.8
+      threshold: 0.8
     suit:
       path: './runs/classify/poker/suit/result-2/weights/best_openvino_model'
-      thres: 0.8
+      threshold: 0.8
   baraja:
     rank:
       path: './runs/classify/baraja/rank/result-2/weights/best_openvino_model'
-      thres: 0.8
+      threshold: 0.8
     suit:
       path: './runs/classify/baraja/suit/result-2/weights/best_openvino_model'
-      thres: 0.8
+      threshold: 0.8
   die:
     value:
       path: './runs/classify/die/value/result-1/weights/best_openvino_model'
-      thres: 0.8    
+      threshold: 0.8    

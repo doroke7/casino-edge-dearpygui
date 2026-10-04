@@ -22,10 +22,11 @@ _runtime_version.ValidateProtobufRuntimeVersion(
 _sym_db = _symbol_database.Default()
 
 
+from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 from pb.recognition import ir_pb2 as recognition_dot_ir__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n,recognition/ir/inference/game/baccarat.proto\x12 pb.recognition.ir.inference.game\x1a\x14recognition/ir.proto\"\x1f\n\x1d\x42\x61\x63\x63\x61ratRecognizeItemsRequest\"M\n\x1e\x42\x61\x63\x63\x61ratRecognizeItemsResponse\x12+\n\x05items\x18\x01 \x03(\x0b\x32\x15.pb.recognition.PokerR\x05items\"!\n\x1f\x42\x61\x63\x63\x61ratRecognizeObjectsRequest\"\x1d\n\x1b\x42\x61\x63\x63\x61ratRecognizeAllRequest\"T\n BaccaratRecognizeObjectsResponse\x12\x30\n\x07objects\x18\x01 \x03(\x0b\x32\x16.pb.recognition.ObjectR\x07objects\"}\n\x1c\x42\x61\x63\x63\x61ratRecognizeAllResponse\x12\x30\n\x07objects\x18\x01 \x03(\x0b\x32\x16.pb.recognition.ObjectR\x07objects\x12+\n\x05items\x18\x02 \x03(\x0b\x32\x15.pb.recognition.PokerR\x05items2\xd5\x03\n\x0f\x42\x61\x63\x63\x61ratService\x12\x93\x01\n\x0eRecognizeItems\x12?.pb.recognition.ir.inference.game.BaccaratRecognizeItemsRequest\x1a@.pb.recognition.ir.inference.game.BaccaratRecognizeItemsResponse\x12\x9b\x01\n\x10RecognizeObjects\x12\x41.pb.recognition.ir.inference.game.BaccaratRecognizeObjectsRequest\x1a\x42.pb.recognition.ir.inference.game.BaccaratRecognizeObjectsResponse0\x01\x12\x8d\x01\n\x0cRecognizeAll\x12=.pb.recognition.ir.inference.game.BaccaratRecognizeAllRequest\x1a>.pb.recognition.ir.inference.game.BaccaratRecognizeAllResponseB\xa7\x02\n$com.pb.recognition.ir.inference.gameB\rBaccaratProtoP\x01ZJgithub.com/wegdevio/pk-studio-reader/pkg/api/recognition/ir/inference/game\xa2\x02\x05PRIIG\xaa\x02 Pb.Recognition.Ir.Inference.Game\xca\x02 Pb\\Recognition\\Ir\\Inference\\Game\xe2\x02,Pb\\Recognition\\Ir\\Inference\\Game\\GPBMetadata\xea\x02$Pb::Recognition::Ir::Inference::Gameb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n,recognition/ir/inference/game/baccarat.proto\x12 pb.recognition.ir.inference.game\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x14recognition/ir.proto\"\x1f\n\x1d\x42\x61\x63\x63\x61ratRecognizeItemsRequest\"}\n\x1e\x42\x61\x63\x63\x61ratRecognizeItemsResponse\x12+\n\x05items\x18\x01 \x03(\x0b\x32\x15.pb.recognition.PokerR\x05items\x12.\n\x04time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x04time\"!\n\x1f\x42\x61\x63\x63\x61ratRecognizeObjectsRequest\"\x1d\n\x1b\x42\x61\x63\x63\x61ratRecognizeAllRequest\"\x84\x01\n BaccaratRecognizeObjectsResponse\x12\x30\n\x07objects\x18\x01 \x03(\x0b\x32\x16.pb.recognition.ObjectR\x07objects\x12.\n\x04time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x04time\"\xad\x01\n\x1c\x42\x61\x63\x63\x61ratRecognizeAllResponse\x12\x30\n\x07objects\x18\x01 \x03(\x0b\x32\x16.pb.recognition.ObjectR\x07objects\x12+\n\x05items\x18\x02 \x03(\x0b\x32\x15.pb.recognition.PokerR\x05items\x12.\n\x04time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x04time2\xd5\x03\n\x0f\x42\x61\x63\x63\x61ratService\x12\x95\x01\n\x0eRecognizeItems\x12?.pb.recognition.ir.inference.game.BaccaratRecognizeItemsRequest\x1a@.pb.recognition.ir.inference.game.BaccaratRecognizeItemsResponse0\x01\x12\x99\x01\n\x10RecognizeObjects\x12\x41.pb.recognition.ir.inference.game.BaccaratRecognizeObjectsRequest\x1a\x42.pb.recognition.ir.inference.game.BaccaratRecognizeObjectsResponse\x12\x8d\x01\n\x0cRecognizeAll\x12=.pb.recognition.ir.inference.game.BaccaratRecognizeAllRequest\x1a>.pb.recognition.ir.inference.game.BaccaratRecognizeAllResponseB\xa7\x02\n$com.pb.recognition.ir.inference.gameB\rBaccaratProtoP\x01ZJgithub.com/wegdevio/pk-studio-reader/pkg/api/recognition/ir/inference/game\xa2\x02\x05PRIIG\xaa\x02 Pb.Recognition.Ir.Inference.Game\xca\x02 Pb\\Recognition\\Ir\\Inference\\Game\xe2\x02,Pb\\Recognition\\Ir\\Inference\\Game\\GPBMetadata\xea\x02$Pb::Recognition::Ir::Inference::Gameb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -33,18 +34,18 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'recognition.ir.inference.ga
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'\n$com.pb.recognition.ir.inference.gameB\rBaccaratProtoP\001ZJgithub.com/wegdevio/pk-studio-reader/pkg/api/recognition/ir/inference/game\242\002\005PRIIG\252\002 Pb.Recognition.Ir.Inference.Game\312\002 Pb\\Recognition\\Ir\\Inference\\Game\342\002,Pb\\Recognition\\Ir\\Inference\\Game\\GPBMetadata\352\002$Pb::Recognition::Ir::Inference::Game'
-  _globals['_BACCARATRECOGNIZEITEMSREQUEST']._serialized_start=104
-  _globals['_BACCARATRECOGNIZEITEMSREQUEST']._serialized_end=135
-  _globals['_BACCARATRECOGNIZEITEMSRESPONSE']._serialized_start=137
-  _globals['_BACCARATRECOGNIZEITEMSRESPONSE']._serialized_end=214
-  _globals['_BACCARATRECOGNIZEOBJECTSREQUEST']._serialized_start=216
-  _globals['_BACCARATRECOGNIZEOBJECTSREQUEST']._serialized_end=249
-  _globals['_BACCARATRECOGNIZEALLREQUEST']._serialized_start=251
-  _globals['_BACCARATRECOGNIZEALLREQUEST']._serialized_end=280
-  _globals['_BACCARATRECOGNIZEOBJECTSRESPONSE']._serialized_start=282
-  _globals['_BACCARATRECOGNIZEOBJECTSRESPONSE']._serialized_end=366
-  _globals['_BACCARATRECOGNIZEALLRESPONSE']._serialized_start=368
-  _globals['_BACCARATRECOGNIZEALLRESPONSE']._serialized_end=493
-  _globals['_BACCARATSERVICE']._serialized_start=496
-  _globals['_BACCARATSERVICE']._serialized_end=965
+  _globals['_BACCARATRECOGNIZEITEMSREQUEST']._serialized_start=137
+  _globals['_BACCARATRECOGNIZEITEMSREQUEST']._serialized_end=168
+  _globals['_BACCARATRECOGNIZEITEMSRESPONSE']._serialized_start=170
+  _globals['_BACCARATRECOGNIZEITEMSRESPONSE']._serialized_end=295
+  _globals['_BACCARATRECOGNIZEOBJECTSREQUEST']._serialized_start=297
+  _globals['_BACCARATRECOGNIZEOBJECTSREQUEST']._serialized_end=330
+  _globals['_BACCARATRECOGNIZEALLREQUEST']._serialized_start=332
+  _globals['_BACCARATRECOGNIZEALLREQUEST']._serialized_end=361
+  _globals['_BACCARATRECOGNIZEOBJECTSRESPONSE']._serialized_start=364
+  _globals['_BACCARATRECOGNIZEOBJECTSRESPONSE']._serialized_end=496
+  _globals['_BACCARATRECOGNIZEALLRESPONSE']._serialized_start=499
+  _globals['_BACCARATRECOGNIZEALLRESPONSE']._serialized_end=672
+  _globals['_BACCARATSERVICE']._serialized_start=675
+  _globals['_BACCARATSERVICE']._serialized_end=1144
 # @@protoc_insertion_point(module_scope)

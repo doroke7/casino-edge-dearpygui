@@ -25,7 +25,7 @@ _sym_db = _symbol_database.Default()
 from pb.recognition import ir_pb2 as recognition_dot_ir__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n(recognition/ir/inference/item/disk.proto\x12 pb.recognition.ir.inference.item\x1a\x14recognition/ir.proto\"\x1b\n\x19\x44iskRecognizeItemsRequest\"H\n\x1a\x44iskRecognizeItemsResponse\x12*\n\x05items\x18\x01 \x03(\x0b\x32\x14.pb.recognition.DiskR\x05items2\x9b\x01\n\x0b\x44iskService\x12\x8b\x01\n\x0eRecognizeItems\x12;.pb.recognition.ir.inference.item.DiskRecognizeItemsRequest\x1a<.pb.recognition.ir.inference.item.DiskRecognizeItemsResponseB\xa3\x02\n$com.pb.recognition.ir.inference.itemB\tDiskProtoP\x01ZJgithub.com/wegdevio/pk-studio-reader/pkg/api/recognition/ir/inference/item\xa2\x02\x05PRIII\xaa\x02 Pb.Recognition.Ir.Inference.Item\xca\x02 Pb\\Recognition\\Ir\\Inference\\Item\xe2\x02,Pb\\Recognition\\Ir\\Inference\\Item\\GPBMetadata\xea\x02$Pb::Recognition::Ir::Inference::Itemb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n(recognition/ir/inference/item/disk.proto\x12 pb.recognition.ir.inference.item\x1a\x14recognition/ir.proto\"\x1b\n\x19\x44iskRecognizeItemsRequest\"H\n\x1a\x44iskRecognizeItemsResponse\x12*\n\x05items\x18\x01 \x03(\x0b\x32\x14.pb.recognition.DiskR\x05items2\x9d\x01\n\x0b\x44iskService\x12\x8d\x01\n\x0eRecognizeItems\x12;.pb.recognition.ir.inference.item.DiskRecognizeItemsRequest\x1a<.pb.recognition.ir.inference.item.DiskRecognizeItemsResponse0\x01\x42\xa3\x02\n$com.pb.recognition.ir.inference.itemB\tDiskProtoP\x01ZJgithub.com/wegdevio/pk-studio-reader/pkg/api/recognition/ir/inference/item\xa2\x02\x05PRIII\xaa\x02 Pb.Recognition.Ir.Inference.Item\xca\x02 Pb\\Recognition\\Ir\\Inference\\Item\xe2\x02,Pb\\Recognition\\Ir\\Inference\\Item\\GPBMetadata\xea\x02$Pb::Recognition::Ir::Inference::Itemb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -38,5 +38,5 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_DISKRECOGNIZEITEMSRESPONSE']._serialized_start=129
   _globals['_DISKRECOGNIZEITEMSRESPONSE']._serialized_end=201
   _globals['_DISKSERVICE']._serialized_start=204
-  _globals['_DISKSERVICE']._serialized_end=359
+  _globals['_DISKSERVICE']._serialized_end=361
 # @@protoc_insertion_point(module_scope)

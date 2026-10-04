@@ -9,5 +9,5 @@ class ScreenshotServicer(AbstractServicer, screenshot_pb2_grpc.ScreenshotService
         super().__init__(frames, snapshots, None, None)
 
     def Make(self, request, context):
-        self._grab_frame(context, "screenshot")
+        self.grab_frame(context, "screenshot")
         return screenshot_pb2.ScreenshotMakeResponse()

@@ -22,10 +22,11 @@ _runtime_version.ValidateProtobufRuntimeVersion(
 _sym_db = _symbol_database.Default()
 
 
+from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 from pb.recognition import ir_pb2 as recognition_dot_ir__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n)recognition/ir/inference/game/sicbo.proto\x12 pb.recognition.ir.inference.game\x1a\x14recognition/ir.proto\"\x1c\n\x1aSicboRecognizeItemsRequest\"H\n\x1bSicboRecognizeItemsResponse\x12)\n\x05items\x18\x01 \x03(\x0b\x32\x13.pb.recognition.DieR\x05items\"\x1e\n\x1cSicboRecognizeObjectsRequest\"\x1a\n\x18SicboRecognizeAllRequest\"Q\n\x1dSicboRecognizeObjectsResponse\x12\x30\n\x07objects\x18\x01 \x03(\x0b\x32\x16.pb.recognition.ObjectR\x07objects\"x\n\x19SicboRecognizeAllResponse\x12\x30\n\x07objects\x18\x01 \x03(\x0b\x32\x16.pb.recognition.ObjectR\x07objects\x12)\n\x05items\x18\x02 \x03(\x0b\x32\x13.pb.recognition.DieR\x05items2\xc0\x03\n\x0cSicboService\x12\x8d\x01\n\x0eRecognizeItems\x12<.pb.recognition.ir.inference.game.SicboRecognizeItemsRequest\x1a=.pb.recognition.ir.inference.game.SicboRecognizeItemsResponse\x12\x95\x01\n\x10RecognizeObjects\x12>.pb.recognition.ir.inference.game.SicboRecognizeObjectsRequest\x1a?.pb.recognition.ir.inference.game.SicboRecognizeObjectsResponse0\x01\x12\x87\x01\n\x0cRecognizeAll\x12:.pb.recognition.ir.inference.game.SicboRecognizeAllRequest\x1a;.pb.recognition.ir.inference.game.SicboRecognizeAllResponseB\xa4\x02\n$com.pb.recognition.ir.inference.gameB\nSicboProtoP\x01ZJgithub.com/wegdevio/pk-studio-reader/pkg/api/recognition/ir/inference/game\xa2\x02\x05PRIIG\xaa\x02 Pb.Recognition.Ir.Inference.Game\xca\x02 Pb\\Recognition\\Ir\\Inference\\Game\xe2\x02,Pb\\Recognition\\Ir\\Inference\\Game\\GPBMetadata\xea\x02$Pb::Recognition::Ir::Inference::Gameb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n)recognition/ir/inference/game/sicbo.proto\x12 pb.recognition.ir.inference.game\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x14recognition/ir.proto\"\x1c\n\x1aSicboRecognizeItemsRequest\"x\n\x1bSicboRecognizeItemsResponse\x12)\n\x05items\x18\x01 \x03(\x0b\x32\x13.pb.recognition.DieR\x05items\x12.\n\x04time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x04time\"\x1e\n\x1cSicboRecognizeObjectsRequest\"\x1a\n\x18SicboRecognizeAllRequest\"\x81\x01\n\x1dSicboRecognizeObjectsResponse\x12\x30\n\x07objects\x18\x01 \x03(\x0b\x32\x16.pb.recognition.ObjectR\x07objects\x12.\n\x04time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x04time\"\xa8\x01\n\x19SicboRecognizeAllResponse\x12\x30\n\x07objects\x18\x01 \x03(\x0b\x32\x16.pb.recognition.ObjectR\x07objects\x12)\n\x05items\x18\x02 \x03(\x0b\x32\x13.pb.recognition.DieR\x05items\x12.\n\x04time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x04time2\xc0\x03\n\x0cSicboService\x12\x8f\x01\n\x0eRecognizeItems\x12<.pb.recognition.ir.inference.game.SicboRecognizeItemsRequest\x1a=.pb.recognition.ir.inference.game.SicboRecognizeItemsResponse0\x01\x12\x93\x01\n\x10RecognizeObjects\x12>.pb.recognition.ir.inference.game.SicboRecognizeObjectsRequest\x1a?.pb.recognition.ir.inference.game.SicboRecognizeObjectsResponse\x12\x87\x01\n\x0cRecognizeAll\x12:.pb.recognition.ir.inference.game.SicboRecognizeAllRequest\x1a;.pb.recognition.ir.inference.game.SicboRecognizeAllResponseB\xa4\x02\n$com.pb.recognition.ir.inference.gameB\nSicboProtoP\x01ZJgithub.com/wegdevio/pk-studio-reader/pkg/api/recognition/ir/inference/game\xa2\x02\x05PRIIG\xaa\x02 Pb.Recognition.Ir.Inference.Game\xca\x02 Pb\\Recognition\\Ir\\Inference\\Game\xe2\x02,Pb\\Recognition\\Ir\\Inference\\Game\\GPBMetadata\xea\x02$Pb::Recognition::Ir::Inference::Gameb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -33,18 +34,18 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'recognition.ir.inference.ga
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'\n$com.pb.recognition.ir.inference.gameB\nSicboProtoP\001ZJgithub.com/wegdevio/pk-studio-reader/pkg/api/recognition/ir/inference/game\242\002\005PRIIG\252\002 Pb.Recognition.Ir.Inference.Game\312\002 Pb\\Recognition\\Ir\\Inference\\Game\342\002,Pb\\Recognition\\Ir\\Inference\\Game\\GPBMetadata\352\002$Pb::Recognition::Ir::Inference::Game'
-  _globals['_SICBORECOGNIZEITEMSREQUEST']._serialized_start=101
-  _globals['_SICBORECOGNIZEITEMSREQUEST']._serialized_end=129
-  _globals['_SICBORECOGNIZEITEMSRESPONSE']._serialized_start=131
-  _globals['_SICBORECOGNIZEITEMSRESPONSE']._serialized_end=203
-  _globals['_SICBORECOGNIZEOBJECTSREQUEST']._serialized_start=205
-  _globals['_SICBORECOGNIZEOBJECTSREQUEST']._serialized_end=235
-  _globals['_SICBORECOGNIZEALLREQUEST']._serialized_start=237
-  _globals['_SICBORECOGNIZEALLREQUEST']._serialized_end=263
-  _globals['_SICBORECOGNIZEOBJECTSRESPONSE']._serialized_start=265
-  _globals['_SICBORECOGNIZEOBJECTSRESPONSE']._serialized_end=346
-  _globals['_SICBORECOGNIZEALLRESPONSE']._serialized_start=348
-  _globals['_SICBORECOGNIZEALLRESPONSE']._serialized_end=468
-  _globals['_SICBOSERVICE']._serialized_start=471
-  _globals['_SICBOSERVICE']._serialized_end=919
+  _globals['_SICBORECOGNIZEITEMSREQUEST']._serialized_start=134
+  _globals['_SICBORECOGNIZEITEMSREQUEST']._serialized_end=162
+  _globals['_SICBORECOGNIZEITEMSRESPONSE']._serialized_start=164
+  _globals['_SICBORECOGNIZEITEMSRESPONSE']._serialized_end=284
+  _globals['_SICBORECOGNIZEOBJECTSREQUEST']._serialized_start=286
+  _globals['_SICBORECOGNIZEOBJECTSREQUEST']._serialized_end=316
+  _globals['_SICBORECOGNIZEALLREQUEST']._serialized_start=318
+  _globals['_SICBORECOGNIZEALLREQUEST']._serialized_end=344
+  _globals['_SICBORECOGNIZEOBJECTSRESPONSE']._serialized_start=347
+  _globals['_SICBORECOGNIZEOBJECTSRESPONSE']._serialized_end=476
+  _globals['_SICBORECOGNIZEALLRESPONSE']._serialized_start=479
+  _globals['_SICBORECOGNIZEALLRESPONSE']._serialized_end=647
+  _globals['_SICBOSERVICE']._serialized_start=650
+  _globals['_SICBOSERVICE']._serialized_end=1098
 # @@protoc_insertion_point(module_scope)

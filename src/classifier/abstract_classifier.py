@@ -40,6 +40,7 @@ class AbstractClassifier(abc.ABC):
         self.ov_device = ovdevice.strip().upper()
         self._load_lock = threading.Lock()
         self._loaded = False
+        self._request_local = threading.local()
 
         mode = str(mode if mode is not None else bootstrap.config('openvino.mode', 'eager')).strip().lower()
         if mode not in ("eager", "lazy"):
@@ -53,6 +54,18 @@ class AbstractClassifier(abc.ABC):
             with self._load_lock:
                 if not self._loaded:
                     self._load()
+
+    def _infer(self, input_data: np.ndarray) -> np.ndarray:
+        """用目前這個執行緒自己的 infer request 推論。
+
+        compiled_model([...]) 底下共用同一個 infer request，多執行緒同時呼叫會拋
+        "Infer Request is busy"，所以每個執行緒各建一個。
+        """
+        request = getattr(self._request_local, "request", None)
+        if request is None:
+            request = self.compiled_model.create_infer_request()
+            self._request_local.request = request
+        return request.infer([input_data])[self.output_layer]
 
     def _load(self) -> None:
         """載入並編譯模型；eager 模式於建構時呼叫，lazy 模式於首次推論時呼叫"""
@@ -145,7 +158,7 @@ class AbstractClassifier(abc.ABC):
         input_data = self._preprocess_image(img)
 
         # 執行檢測
-        results = self.compiled_model([input_data])[self.output_layer]
+        results = self._infer(input_data)
 
         # 後處理結果
         return self._postprocess_results(results)

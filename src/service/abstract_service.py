@@ -1,5 +1,7 @@
 from abc import ABC
 
+import time
+
 import cv2
 import grpc
 
@@ -11,6 +13,11 @@ from pb.recognition import ir_pb2
 def interval_seconds(key):
     """The streaming interval configured under `key` (milliseconds), in seconds."""
     return float(config(key, 1000)) / 1000
+
+
+def _frame_cache_key():
+    """The cache key of a camera frame: the current timestamp to one decimal place (seconds)."""
+    return "{:.1f}".format(time.time())
 
 
 class AbstractServicer(ABC):
@@ -52,7 +59,7 @@ class AbstractServicer(ABC):
                 confidence=card_conf,
             )
             for x1, y1, _x2, _y2, _x, _y, w, h, _card_name, card_conf, suit_name, _suit_conf, rank_name, _rank_conf, *_
-            in self._pokers_pipeline.run(frame_rgb)
+            in self._pokers_pipeline.run(frame_rgb, _frame_cache_key())
         ]
 
     def _recognize_dice(self, frame):
@@ -64,7 +71,7 @@ class AbstractServicer(ABC):
         return [
             ir_pb2.Die(value=str(value), x=x1, y=y1, width=w, height=h, confidence=confidence)
             for x1, y1, _x2, _y2, _x, _y, w, h, value, confidence, *_
-            in self._die_pipeline.run(frame_rgb)
+            in self._die_pipeline.run(frame_rgb, _frame_cache_key())
         ]
 
     @staticmethod
@@ -77,5 +84,5 @@ class AbstractServicer(ABC):
         return [
             ir_pb2.Object(**{"class": class_name}, x=x1, y=y1, width=w, height=h, confidence=confidence)
             for x1, y1, _x2, _y2, _x, _y, w, h, class_name, confidence, *_
-            in pipeline.run(frame_rgb)
+            in pipeline.run(frame_rgb, _frame_cache_key())
         ]

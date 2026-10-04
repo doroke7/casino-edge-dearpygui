@@ -68,17 +68,18 @@ class PokerPredictorCommand(AbstractCommand):
         click.echo("總共時間: {:.1f} ms".format(f_elapsed * 1000))
 
     def predict(self, image: Path) -> list[dict]:
-        f_started = time.perf_counter()
         frame_bgr = cv2.imread(str(image))
         if frame_bgr is None:
             raise click.ClickException("無法讀取圖片 " + str(image))
         frame_rgb = cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2RGB)
 
-        l_results = self.poker_pipeline.run(frame_rgb)
+        f_started = time.perf_counter()
+        l_results = self.poker_pipeline.run(frame_rgb, image.name)
+        f_infer = time.perf_counter() - f_started
         l_dicts = [
             {k: (v if isinstance(v, (str, int)) else float(v)) for k, v in zip(RESULT_KEYS, t_result)}
             for t_result in l_results
         ]
 
-        click.echo("{} 執行時間 {:.1f} ms".format(image.name, (time.perf_counter() - f_started) * 1000))
+        click.echo("{} 執行時間 {:.1f} ms".format(image.name, f_infer * 1000))
         return l_dicts

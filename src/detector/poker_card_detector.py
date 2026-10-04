@@ -1,7 +1,6 @@
 from typing import List, Optional, Tuple
 import numpy as np
 import bootstrap
-from lib.cache.main import cacheable
 from src.detector.abstract_detector import AbstractDetector
 
 
@@ -27,7 +26,6 @@ class PokerCardDetector(AbstractDetector):
             ovdevice if ovdevice is not None else bootstrap.config('openvino.device'),
         )
 
-    @cacheable(prefix="poker_card_detector", value="", ttl=1)
     def __call__(self, frame_rgb: np.ndarray) -> List[Tuple[int, int, int, int, int, int, int, int, float, int, str]]:
         """偵測圖片中的撲克牌
 

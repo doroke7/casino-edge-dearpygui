@@ -32,6 +32,27 @@ uv run main.py recognition            # 預設 port 見 config/recognition.yaml
 make buf
 ```
 
+## Command（離線辨識）
+
+對一個目錄底下的圖片（只讀第一層，支援 `.jpg` `.jpeg` `.png` `.bmp` `.webp`）跑辨識，依檔名順序印出結果與耗時報告。
+
+```
+uv run main.py command poker-predictor --workdir ./runtime/poker
+uv run main.py command die-predictor   --workdir ./runtime/die --threads 8
+```
+
+| 指令 | 說明 |
+| --- | --- |
+| `poker-predictor` | 辨識撲克牌：牌面、花色、點數與信心值、座標框 |
+| `die-predictor` | 辨識骰子（pipeline 目前是佔位實作，一律偵測到 0 顆） |
+
+| 參數 | 說明 |
+| --- | --- |
+| `--workdir` | 必填，圖片目錄（必須已存在） |
+| `--threads` | 同時辨識的執行緒數量，預設 4 |
+
+列出所有指令：`uv run main.py command --help`
+
 ## 目錄說明
 
 ```
@@ -46,6 +67,7 @@ make buf
 │   ├── root.py             #   指令群組，註冊各子指令
 │   ├── desktop/            #   desktop：桌面攝影機預覽（dearpygui）
 │   ├── recognition/        #   recognition：啟動辨識 gRPC 服務
+│   ├── command/            #   command：離線辨識（poker-predictor、die-predictor）
 │   └── all/                #   all：桌面 + gRPC 同時啟動，共用攝影機畫面
 │
 ├── bootstrap/              # 啟動初始化（載入 config 等）
@@ -60,6 +82,7 @@ make buf
 │   ├── app/                #   桌面應用：desktop、main_thread、camera_controller、snapshot（截圖存 JPEG）
 │   ├── ui/                 #   dearpygui 介面（menu 選單列、status 狀態文字）
 │   ├── driver/camera.py    #   攝影機驅動（解析度、FPS）
+│   ├── command/            #   command 類別（各自獨立，不共用實作）
 │   ├── service/            #   gRPC servicer 實作（ir/table/inference/{game,item}、ir/monitor/screenshot）
 │   ├── register/           #   把 servicer 註冊到 gRPC server
 │   ├── pipeline/           #   各遊戲/物件辨識流程（baccarat、sicbo、poker、die、disk、wheel、bead、baraja）

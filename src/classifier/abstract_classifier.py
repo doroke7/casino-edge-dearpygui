@@ -35,7 +35,7 @@ class AbstractClassifier(abc.ABC):
         """
 
         self.model_dir = model_dir
-        self.conf_threshold = conf_threshold
+        self.conf_threshold = float(conf_threshold)
         # OpenVINO 以大小寫區分裝置名（例如須為 CPU 而非 cpu）
         self.ov_device = ovdevice.strip().upper()
         self._load_lock = threading.Lock()

@@ -5,48 +5,48 @@ mode: 'lazy'
 detect:
   poker:
     card:
-      path: './model/detect/poker/card'
+      path: './runs/detect/poker/card/result-3/weights/best_openvino_model'
       thres: 0.5
     back_flow_front:
       path:
       thres: 0.7
   baraja:
     card:
-      path: './model/detect/baraja/card'
+      path: './runs/detect/baraja/card/result-1/weights/best_openvino_model'
       thres: 0.5
   disk:
     disk:
-      path: './model/detect/disk/disk'
+      path: './runs/detect/disk/disk/result-1/weights/best_openvino_model'
       thres: 0.5
   bead:
     bead:
-      path: './model/detect/bead/bead'
+      path: './runs/detect/bead/bead/result-1/weights/best_openvino_model'
       thres: 0.5
   die:
     cube:
-      path: './model/detect/disk/cube'
+      path: './runs/detect/die/cube/result-1/weights/best_openvino_model'
       thres: 0.5
 
 
 classify:
   poker:
     card:
-      path: './model/classify/poker/card'
+      path: './runs/classify/poker/card/result-1/weights/best_openvino_model'
       thres: 0.8
     rank:
-      path: './model/classify/poker/rank'
+      path: './runs/classify/poker/rank/result-2/weights/best_openvino_model'
       thres: 0.8
     suit:
-      path: './model/classify/poker/suit'
+      path: './runs/classify/poker/suit/result-2/weights/best_openvino_model'
       thres: 0.8
   baraja:
     rank:
-      path: './model/classify/baraja/rank'
+      path: './runs/classify/baraja/rank/result-2/weights/best_openvino_model'
       thres: 0.8
     suit:
-      path: './model/classify/baraja/suit'
+      path: './runs/classify/baraja/suit/result-2/weights/best_openvino_model'
       thres: 0.8
   die:
     value:
-      path: './model/classify/die/value'
+      path: './runs/classify/die/value/result-1/weights/best_openvino_model'
       thres: 0.8    

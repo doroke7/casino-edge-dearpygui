@@ -3,7 +3,7 @@
 from dependency_injector import containers, providers
 
 from src.classifier import PokerCardClassifier, PokerRankClassifier, PokerSuitClassifier
-from src.command import DieCommand, PokerCommand
+from src.command import DiePredictorCommand, PokerPredictorCommand
 from src.detector import PokerCardDetector
 from src.pipeline import DiePipeline, PokerPipeline
 
@@ -20,13 +20,11 @@ class CommandContainer(containers.DeclarativeContainer):
 
     die_pipeline = providers.Singleton(DiePipeline)
 
-    poker_command = providers.Singleton(
-        PokerCommand,
+    poker_predictor_command = providers.Singleton(
+        PokerPredictorCommand,
         poker_pipeline=poker_pipeline,
-        die_pipeline=die_pipeline,
     )
-    die_command = providers.Singleton(
-        DieCommand,
-        poker_pipeline=poker_pipeline,
+    die_predictor_command = providers.Singleton(
+        DiePredictorCommand,
         die_pipeline=die_pipeline,
     )
